@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hal Penyambutan – Kuis Belajar Nusantara</title>
+  <!-- Tailwind hasil build -->
+  <link rel="stylesheet" href="./dist/output.css" />
+</head>
+<body class="min-h-screen bg-white">
+
+  <!-- Kanvas utama, full screen -->
+  <main class="relative w-full min-h-screen flex items-center justify-center">
+
+    <!-- Kolom tengah: logo + 2 tombol bulat -->
+    <div class="flex flex-col items-center gap-10 sm:gap-14">
+
+      <!-- LOGO -->
+      <img
+        src="./src/assets/LogoSementara.png"
+        alt="Logo Kuis Belajar Nusantara"
+        class="w-64 sm:w-80 max-w-full object-contain"
+      />
+
+      <!-- Tombol bulat (MAP & PLAY) -->
+      <div class="flex gap-10 sm:gap-14">
+        <!-- Tombol MAP -->
+        <button
+          id="btnMap"
+          class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border border-black
+                 bg-slate-100 flex items-center justify-center
+                 hover:bg-slate-200 active:scale-95 transition"
+        >
+          <img
+            src="./src/assets/iconPeta.png"
+            alt="Pilih Wilayah"
+            class="w-3/5 h-3/5 object-contain"
+          />
+        </button>
+
+        <!-- Tombol PLAY -->
+        <button
+          id="btnPlay"
+          class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border border-black
+                 bg-slate-100 flex items-center justify-center
+                 hover:bg-slate-200 active:scale-95 transition"
+        >
+          <img
+            src="./src/assets/iconMain.png"
+            alt="Mulai Kuis"
+            class="w-3/5 h-3/5 object-contain"
+          />
+        </button>
+      </div>
+    </div>
+
+    <!-- Tombol kanan atas: KELUAR -->
+    <button
+      id="btnKeluar"
+      class="absolute top-6 right-6 w-14 h-14 sm:w-16 sm:h-16
+             rounded-2xl border border-black bg-white
+             flex items-center justify-center
+             hover:bg-slate-100 active:scale-95 transition"
+    >
+      <img
+        src="./src/assets/iconKeluar.png"
+        alt="Keluar"
+        class="w-3/5 h-3/5 object-contain"
+      />
+    </button>
+
+    <!-- Tombol kanan tengah: MEDALI / PENCAPAIAN -->
+    <button
+      id="btnPencapaian"
+      class="absolute top-28 right-6 w-14 h-32 sm:w-16 sm:h-40
+             rounded-3xl border border-black bg-slate-100
+             flex items-center justify-center
+             hover:bg-slate-200 active:scale-95 transition"
+    >
+      <img
+        src="./src/assets/iconRewards.png"
+        alt="Pencapaian"
+        class="w-2/3 h-2/3 object-contain"
+      />
+    </button>
+
+  </main>
+
+  <!-- Logic tombol (sementara ke halaman dummy, bisa kamu ganti nanti) -->
+  <script>
+    // nanti ganti dengan halaman beneran sesuai flow kamu
+    document.getElementById("btnPlay").addEventListener("click", function () {
+      // contoh: menuju halaman pilih mode / soal
+      window.location.href = "HalMainKuis.html";
+    });
+
+    document.getElementById("btnMap").addEventListener("click", function () {
+      // contoh: menuju peta Nusantara
+      window.location.href = "HalBelajarKategori.html";
+    });
+
+    document.getElementById("btnKeluar").addEventListener("click", function () {
+      // contoh: kembali ke halaman login / awal
+      window.location.href = "HalMasuk.html";
+    });
+
+    document.getElementById("btnPencapaian").addEventListener("click", function () {
+      // contoh: menuju halaman pencapaian / skor
+      window.location.href = "HalRewards.html";
+    });
+  </script>
+</body>
+</html>
