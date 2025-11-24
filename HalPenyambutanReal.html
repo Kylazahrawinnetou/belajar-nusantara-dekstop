@@ -68,20 +68,19 @@
       />
     </button>
 
-    <!-- Tombol kanan tengah: MEDALI / PENCAPAIAN -->
     <button
-      id="btnPencapaian"
-      class="absolute top-28 right-6 w-14 h-32 sm:w-16 sm:h-40
-             rounded-3xl border border-black bg-slate-100
-             flex items-center justify-center
-             hover:bg-slate-200 active:scale-95 transition"
-    >
-      <img
-        src="./src/assets/LogoIcons/iconRewards.png"
-        alt="Pencapaian"
-        class="w-2/3 h-2/3 object-contain"
-      />
-    </button>
+  id="btnPencapaian"
+  class="absolute top-28 right-6 w-14 h-32 sm:w-16 sm:h-40
+         rounded-3xl border border-black bg-slate-100
+         flex items-center justify-center
+         hover:bg-slate-200 active:scale-95 transition"
+>
+  <img
+    src="./src/assets/LogoIcons/iconRewards.png"
+    alt="Pencapaian"
+    class="w-2/3 h-2/3 object-contain"
+  />
+</button>
 
   </main>
 
@@ -104,9 +103,10 @@
     });
 
     document.getElementById("btnPencapaian").addEventListener("click", function () {
-      // contoh: menuju halaman pencapaian / skor
-      window.location.href = "HalRewards.html";
-    });
+  window.location.href = "HalPencapaian.html";
+});
+
+
   </script>
 </body>
 </html>

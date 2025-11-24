@@ -3,47 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <title>Hal Penyambutan – Kuis Belajar Nusantara</title>
+  <!-- CSS Tailwind hasil build -->
   <link rel="stylesheet" href="./dist/output.css" />
 </head>
 
-<!-- BODY jadi background putih full -->
-<body class="min-h-screen bg-white flex items-center justify-center">
+<body class="min-h-screen bg-white">
 
-  <!-- Konten utama -->
-  <section class="flex flex-col items-center space-y-6">
+  <!-- Kanvas utama, sama seperti HalPenyambutanReal -->
+  <main class="relative w-full min-h-screen flex items-center justify-center">
 
-    <!-- LOGO tanpa border -->
-    <div
-      class="w-52 h-64 sm:w-64 sm:h-72 rounded-md flex items-center justify-center overflow-hidden"
-    >
+    <!-- Kolom tengah: LOGO + tombol MASUK/DAFTAR -->
+    <section class="flex flex-col items-center gap-10 sm:gap-14">
+      <!-- LOGO: ukuran & posisi disamain dengan HalPenyambutanReal -->
       <img
         src="./src/assets/LogoIcons/LogoSementara.png"
         alt="Kuis Belajar Nusantara"
-        class="max-h-full max-w-full object-contain"
+        class="w-64 sm:w-80 max-w-full object-contain"
       />
-    </div>
 
-    <!-- Tombol MASUK -->
-    <button
-      id="btnMasuk"
-      class="w-56 sm:w-64 py-3 rounded-lg border border-slate-900 bg-slate-50
-             text-slate-900 font-semibold tracking-wide text-sm sm:text-base
-             hover:bg-slate-100 active:scale-[0.98] transition"
-    >
-      MASUK
-    </button>
+      <!-- Tombol MASUK & DAFTAR -->
+      <div class="flex flex-col gap-4">
+        <!-- Tombol MASUK -->
+        <button
+          id="btnMasuk"
+          class="w-56 sm:w-64 py-3 rounded-lg border border-slate-900 bg-slate-50
+                 text-slate-900 font-semibold tracking-wide text-sm sm:text-base
+                 hover:bg-slate-100 active:scale-[0.98] transition"
+        >
+          MASUK
+        </button>
 
-    <!-- Tombol DAFTAR -->
-    <button
-      id="btnDaftar"
-      class="w-56 sm:w-64 py-3 rounded-lg border border-slate-900 bg-white
-             text-slate-900 font-semibold tracking-wide text-sm sm:text-base
-             hover:bg-slate-100 active:scale-[0.98] transition"
-    >
-      DAFTAR
-    </button>
+        <!-- Tombol DAFTAR -->
+        <button
+          id="btnDaftar"
+          class="w-56 sm:w-64 py-3 rounded-lg border border-slate-900 bg-white
+                 text-slate-900 font-semibold tracking-wide text-sm sm:text-base
+                 hover:bg-slate-100 active:scale-[0.98] transition"
+        >
+          DAFTAR
+        </button>
+      </div>
+    </section>
 
-  </section>
+  </main>
 
   <!-- Logic tombol -->
   <script>

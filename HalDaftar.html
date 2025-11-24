@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daftar – Hewan Nusantara</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Firebase COMPAT (bukan modular) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+  <script>
+    // ===== FIREBASE CONFIG punyamu =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7Q_tqMXzbXEsuyCKNuU_S1RvyclpIs38",
+      authDomain: "belajar-nusantara.firebaseapp.com",
+      projectId: "belajar-nusantara",
+      storageBucket: "belajar-nusantara.appspot.com",
+      messagingSenderId: "942846845550",
+      appId: "1:942846845550:web:32d0093b01f46b1e03bc7f",
+      measurementId: "G-J0QVM8XLLE"
+    };
+
+    // Inisialisasi Firebase (COMPAT)
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+  </script>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+
+  <!-- KARTU FORM DAFTAR -->
+  <div class="w-full max-w-xl bg-white rounded-2xl p-8 shadow">
+
+    <!-- Judul -->
+    <h1 class="text-3xl font-extrabold text-center mb-8 tracking-wide">
+      DAFTAR
+    </h1>
+
+    <!-- Input Nama -->
+    <label class="block mb-2 font-semibold">Daftarkan Nama Anda</label>
+    <input
+      id="usernameInput"
+      type="text"
+      placeholder="Daftarkan Nama Anda"
+      class="w-full border border-black rounded-xl p-3 mb-5 bg-gray-100 text-lg placeholder-gray-500"
+    />
+
+    <!-- Input Password -->
+    <label class="block mb-2 font-semibold">Daftarkan Kata Sandi Anda</label>
+    <input
+      id="passwordInput"
+      type="password"
+      placeholder="Daftarkan Kata Sandi Anda"
+      class="w-full border border-black rounded-xl p-3 mb-8 bg-gray-100 text-lg placeholder-gray-500"
+    />
+
+    <!-- Tombol DAFTAR -->
+    <button
+      id="signupBtn"
+      class="w-full py-3 rounded-xl text-white bg-black hover:bg-gray-900 text-lg font-bold tracking-wide transition"
+    >
+      DAFTAR
+    </button>
+
+    <!-- Link ke HalMasuk -->
+    <p class="text-center mt-6 text-base">
+      Sudah mempunyai akun?
+      <a href="HalMasuk.html" class="font-semibold underline-offset-2 hover:underline">
+        Masuk
+      </a>
+    </p>
+  </div>
+
+  <!-- NOTIF: BERHASIL DIDAFTRAKAN (HIJAU) -->
+  <div
+    id="card-registered-now"
+    class="hidden fixed top-6 left-6 z-40"
+  >
+    <div class="bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3">
+      <img
+        src="./src/assets/LogoIcons/iconNamaKataSandiSudahDidaftarkanGreen.png"
+        alt="Sukses"
+        class="w-10 h-10"
+      />
+      <p class="font-semibold text-sm sm:text-base">
+        Nama dan password ini<br />sudah didaftarkan
+      </p>
+    </div>
+  </div>
+
+  <!-- NOTIF: SUDAH TERDAFTAR (MERAH) -->
+  <div
+    id="card-already-exists"
+    class="hidden fixed top-6 left-6 z-40"
+  >
+    <div class="bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3">
+      <img
+        src="./src/assets/LogoIcons/iconNamaKataSandiSudahTerdaftarRed.png"
+        alt="Sudah Terdaftar"
+        class="w-10 h-10"
+      />
+      <p class="font-semibold text-sm sm:text-base">
+        Nama dan password ini<br />sudah terdaftar
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Sama seperti HalMasuk: ubah username → email internal
+    function usernameToEmail(username) {
+      return username.trim().toLowerCase().replace(/\s+/g, "_") + "@local.project";
+    }
+
+    const usernameInput = document.getElementById("usernameInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const signupBtn = document.getElementById("signupBtn");
+
+    const cardRegisteredNow = document.getElementById("card-registered-now");
+    const cardAlreadyExists = document.getElementById("card-already-exists");
+
+    function hideAllCards() {
+      cardRegisteredNow.classList.add("hidden");
+      cardAlreadyExists.classList.add("hidden");
+    }
+
+    function showCard(type) {
+      hideAllCards();
+      if (type === "registered-now") {
+        cardRegisteredNow.classList.remove("hidden");
+      } else if (type === "already-exists") {
+        cardAlreadyExists.classList.remove("hidden");
+      }
+
+      // auto hide setelah 3 detik
+      setTimeout(hideAllCards, 3000);
+    }
+
+    async function handleSignup() {
+      hideAllCards();
+
+      const username = (usernameInput.value || "").trim();
+      const password = (passwordInput.value || "").trim();
+
+      if (!username || !password) {
+        // kalau kosong, boleh kamu tambahin notif lain kalau mau
+        return;
+      }
+
+      const email = usernameToEmail(username);
+
+      signupBtn.disabled = true;
+      signupBtn.textContent = "Memproses...";
+
+      try {
+        // coba buat akun baru
+        const cred = await auth.createUserWithEmailAndPassword(email, password);
+
+        // opsional: simpan displayName
+        await cred.user.updateProfile({ displayName: username }).catch(() => {});
+
+        // BERHASIL → tampilkan notif hijau
+        showCard("registered-now");
+
+        // setelah 1.2 detik, pindah ke HalMasuk
+        setTimeout(() => {
+          window.location.href = "HalMasuk.html";
+        }, 1200);
+      } catch (err) {
+        console.error("signup error:", err);
+
+        if (err.code === "auth/email-already-in-use") {
+          // akun dengan nama (email internal) ini sudah pernah dibuat
+          showCard("already-exists");
+        } else {
+          // error lain → sementara juga pakai notif merah
+          showCard("already-exists");
+        }
+      }
+
+      signupBtn.disabled = false;
+      signupBtn.textContent = "DAFTAR";
+    }
+
+    signupBtn.addEventListener("click", handleSignup);
+
+    // Enter di password juga submit
+    passwordInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleSignup();
+      }
+    });
+  </script>
+</body>
+</html>

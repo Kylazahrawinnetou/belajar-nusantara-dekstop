@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jawab Kuis – Nusantara</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+
+  <!-- WRAPPER BESAR -->
+  <div class="w-full max-w-5xl bg-white rounded-3xl shadow-lg border border-black p-4 sm:p-6 md:p-8">
+
+    <!-- BAR ATAS -->
+    <div class="flex items-stretch mb-6">
+      <!-- Tombol back -->
+      <button
+        id="backBtn"
+        class="w-12 h-12 rounded-2xl border border-black flex items-center justify-center mr-4 shrink-0"
+      >
+        <img
+          src="./src/assets/LogoIcons/iconKembali.png"
+          alt="Kembali"
+          class="w-6 h-6"
+        />
+      </button>
+
+      <div class="flex-1">
+        <div
+          id="title-bar"
+          class="w-full h-12 rounded-2xl border border-black bg-gray-100 px-4 flex items-center justify-center text-center text-xl sm:text-2xl font-bold"
+        >
+          JAWAB KUIS
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== SPLASH MODE =============== -->
+
+    <!-- Splash Mode Mudah -->
+    <div
+      id="splash-easy"
+      class="flex flex-col items-center justify-center border border-black rounded-3xl bg-gray-100 min-h-[60vh] px-4"
+    >
+      <img
+        src="./src/assets/LogoIcons/LogoMudah.png"
+        alt="Logo Mode Mudah – 11 Level"
+        class="max-w-xs sm:max-w-sm w-full"
+      />
+    </div>
+
+    <!-- Splash Mode Normal -->
+    <div
+      id="splash-normal"
+      class="hidden flex-col items-center justify-center border border-black rounded-3xl bg-gray-100 min-h-[60vh] px-4"
+    >
+      <img
+        src="./src/assets/LogoIcons/LogoNormal.png"
+        alt="Logo Mode Normal – 15 Level"
+        class="max-w-xs sm:max-w-sm w-full"
+      />
+    </div>
+
+    <!-- Splash Mode Sulit -->
+    <div
+      id="splash-hard"
+      class="hidden flex-col items-center justify-center border border-black rounded-3xl bg-gray-100 min-h-[60vh] px-4"
+    >
+      <img
+        src="./src/assets/LogoIcons/LogoSulit.png"
+        alt="Logo Mode Sulit – 19 Level"
+        class="max-w-xs sm:max-w-sm w-full"
+      />
+    </div>
+
+    <!-- =============== KARTU KUIS =============== -->
+    <div
+      id="quiz-card"
+      class="hidden flex-col border border-black rounded-3xl bg-gray-100 p-4 sm:p-6 min-h-[60vh]"
+    >
+      <!-- BAR TIMER & SKOR -->
+      <div class="flex items-center justify-between mb-4 gap-2">
+        <div
+          id="timer"
+          class="flex-1 max-w-[7.5rem] inline-flex items-center justify-center px-4 py-2 rounded-2xl border border-black bg-white text-lg font-bold"
+        >
+          00:15
+        </div>
+
+        <div class="text-[11px] sm:text-sm md:text-base font-semibold text-center flex-1">
+          <span id="level-text">Level 1 / 11</span>
+        </div>
+
+        <div
+          id="score-box"
+          class="flex-1 max-w-[7.5rem] inline-flex items-center justify-center px-4 py-2 rounded-2xl border border-black bg-white text-lg font-bold"
+        >
+          Skor:
+          <span id="score" class="ml-1 text-lg sm:text-xl">0</span>
+        </div>
+      </div>
+
+      <!-- PERTANYAAN -->
+      <div
+        id="question-text"
+        class="mb-6 rounded-3xl border border-black bg-gray-200 px-4 py-6 text-center text-lg sm:text-2xl font-semibold"
+      >
+        Pertanyaannya akan muncul di sini
+      </div>
+
+      <!-- PILIHAN JAWABAN -->
+      <div class="space-y-4">
+        <button
+          class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 text-base sm:text-lg font-semibold"
+        >
+          Opsi 1
+        </button>
+        <button
+          class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 text-base sm:text-lg font-semibold"
+        >
+          Opsi 2
+        </button>
+        <button
+          class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 text-base sm:text-lg font-semibold"
+        >
+          Opsi 3
+        </button>
+      </div>
+    </div>
+
+    <!-- =============== FINAL SCORE =============== -->
+    <div
+      id="final-screen"
+      class="hidden flex flex-col items-center justify-center border border-black rounded-3xl bg-gray-100 min-h-[60vh] px-4"
+    >
+      <p class="text-2xl sm:text-3xl font-bold mb-4 text-center">
+        Permainan Selesai!
+      </p>
+      <p class="text-lg sm:text-xl mb-2 text-center">
+        Total Skor Anda:
+      </p>
+      <p
+        id="final-score"
+        class="text-5xl sm:text-6xl md:text-7xl font-extrabold text-center"
+      >
+        0
+      </p>
+    </div>
+  </div>
+
+  <!-- POPUP KONFIRMASI KELUAR -->
+  <div
+    id="confirm-exit"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+  >
+    <div
+      class="bg-white rounded-2xl border border-black p-6 w-full max-w-sm text-center shadow-lg"
+    >
+      <p class="font-semibold mb-4 text-base sm:text-lg">
+        Apa Anda ingin berhenti bermain kuis?
+      </p>
+
+      <div class="flex gap-3 justify-center">
+        <button
+          id="btn-exit-yes"
+          class="px-4 py-2 rounded-xl border border-black bg-gray-200 font-semibold"
+        >
+          Ya
+        </button>
+        <button
+          id="btn-exit-no"
+          class="px-4 py-2 rounded-xl border border-black bg-red-500 text-white font-semibold"
+        >
+          Tidak, lanjutkan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT DATA & GAME -->
+  <script src="./dataNusantara.js"></script>
+  <script src="./HalMainKuis.js"></script>
+</body>
+</html>

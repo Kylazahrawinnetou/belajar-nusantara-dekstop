@@ -20,5 +20,8 @@
   "homepage": "https://github.com/Kylazahrawinnetou/Kylazahrawinnetou-SemangatCantikk#readme",
   "devDependencies": {
     "tailwindcss": "^3.4.18"
+  },
+  "dependencies": {
+    "firebase": "^12.6.0"
   }
 }

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Masuk – Hewan Nusantara</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Firebase COMPAT (non-modular, cocok untuk HTML biasa) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+  <script>
+    // ===== FIREBASE CONFIG (punyamu) =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7Q_tqMXzbXEsuyCKNuU_S1RvyclpIs38",
+      authDomain: "belajar-nusantara.firebaseapp.com",
+      projectId: "belajar-nusantara",
+      storageBucket: "belajar-nusantara.appspot.com",
+      messagingSenderId: "942846845550",
+      appId: "1:942846845550:web:32d0093b01f46b1e03bc7f",
+      measurementId: "G-J0QVM8XLLE"
+    };
+
+    // Inisialisasi Firebase (COMPAT)
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+  </script>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+
+  <!-- WRAPPER FORM -->
+  <div class="w-full max-w-xl bg-white rounded-2xl p-8 shadow">
+
+    <!-- Judul -->
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-center mb-10 tracking-wide">
+      MASUK
+    </h1>
+
+    <!-- Input Nama -->
+    <label class="block mb-2 font-semibold">Masukkan Nama Anda</label>
+    <input
+      id="usernameInput"
+      type="text"
+      placeholder="Masukkan Nama Anda"
+      class="w-full border border-black rounded-xl p-3 mb-6 bg-gray-100 text-lg placeholder-gray-500"
+    />
+
+    <!-- Input Password -->
+    <label class="block mb-2 font-semibold">Masukkan Kata Sandi Anda</label>
+    <input
+      id="passwordInput"
+      type="password"
+      placeholder="Masukkan Kata Sandi Anda"
+      class="w-full border border-black rounded-xl p-3 mb-8 bg-gray-100 text-lg placeholder-gray-500"
+    />
+
+    <!-- Tombol MASUK -->
+    <button
+      id="loginBtn"
+      class="w-full py-3 rounded-xl text-white bg-black hover:bg-gray-900 text-lg font-bold tracking-wide transition"
+    >
+      MASUK
+    </button>
+
+    <!-- Link ke HalDaftar -->
+    <p class="mt-6 text-center text-base">
+      Belum mempunyai akun?
+      <a href="HalDaftar.html" class="font-semibold underline-offset-2 hover:underline">
+        Daftar
+      </a>
+    </p>
+  </div>
+
+  <!-- NOTIF: Nama & Password tidak terdaftar -->
+  <div
+    id="card-not-registered"
+    class="hidden fixed inset-0 z-40 flex items-start justify-center pointer-events-none"
+  >
+    <div class="mt-16 bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3 pointer-events-auto">
+      <img src="./src/assets/LogoIcons/iconNamaKataSandiBelumTerdaftar.png" alt="Error" class="w-10 h-10" />
+      <p class="font-semibold text-sm sm:text-base">
+        Nama dan Password ini tidak terdaftar
+      </p>
+    </div>
+  </div>
+
+  <!-- NOTIF: Periksa kembali Nama / Password -->
+  <div
+    id="card-wrong-input"
+    class="hidden fixed inset-0 z-40 flex items-start justify-center pointer-events-none"
+  >
+    <div class="mt-16 bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3 pointer-events-auto">
+      <img src="./src/assets/LogoIcons/iconNamaKataSandisalah.png" alt="Warning" class="w-10 h-10" />
+      <p class="font-semibold text-sm sm:text-base">
+        Periksa kembali pada Nama atau Password Anda
+      </p>
+    </div>
+  </div>
+
+  <script>
+  // Sama dengan HalDaftar: ubah username → email internal
+  function usernameToEmail(username) {
+    return username.trim().toLowerCase().replace(/\s+/g, "_") + "@local.project";
+  }
+
+  const usernameInput = document.getElementById("usernameInput");
+  const passwordInput = document.getElementById("passwordInput");
+  const loginBtn = document.getElementById("loginBtn");
+
+  const cardNotRegistered = document.getElementById("card-not-registered");
+  const cardWrongInput = document.getElementById("card-wrong-input");
+
+  function hideAllCards() {
+    cardNotRegistered.classList.add("hidden");
+    cardWrongInput.classList.add("hidden");
+  }
+
+  function showCard(type) {
+    hideAllCards();
+    if (type === "not-registered") {
+      cardNotRegistered.classList.remove("hidden");
+    } else if (type === "wrong-input") {
+      cardWrongInput.classList.remove("hidden");
+    }
+
+    // auto hide setelah 3 detik
+    setTimeout(hideAllCards, 3000);
+  }
+
+  async function handleLogin() {
+    hideAllCards();
+
+    const username = (usernameInput.value || "").trim();
+    const password = (passwordInput.value || "").trim();
+
+    // Kalau ada field kosong → salah input
+    if (!username || !password) {
+      showCard("wrong-input");
+      return;
+    }
+
+    const email = usernameToEmail(username);
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Memproses...";
+
+    try {
+      // LANGSUNG COBA LOGIN
+      await auth.signInWithEmailAndPassword(email, password);
+
+      // LOGIN SUKSES → pindah ke halaman penyambutan
+      window.location.href = "HalPenyambutanReal.html";
+    } catch (err) {
+      console.error("Login error:", err.code, err.message);
+
+      // ==== MAPPING ERROR → NOTIF ====
+      if (err.code === "auth/user-not-found") {
+        // email (username) ini BELUM PERNAH terdaftar
+        showCard("not-registered");
+      } else if (
+        err.code === "auth/wrong-password" ||
+        err.code === "auth/invalid-credential"
+      ) {
+        // email sudah ada, tapi password (atau kombinasinya) salah
+        showCard("wrong-input");
+      } else {
+        // Error lain (misal jaringan) → tetap pakai notif salah input
+        showCard("wrong-input");
+      }
+    }
+
+    loginBtn.disabled = false;
+    loginBtn.textContent = "MASUK";
+  }
+
+  // klik tombol
+  loginBtn.addEventListener("click", handleLogin);
+
+  // enter di input password juga bisa login
+  passwordInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  });
+</script>
+
+</body>
+</html>
