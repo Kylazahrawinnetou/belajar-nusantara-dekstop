@@ -4,822 +4,665 @@
   <meta charset="UTF-8" />
   <title>Senjata Daerah – Kuis Nusantara</title>
   <link rel="stylesheet" href="./dist/output.css" />
-</head>
-<body class="bg-white min-h-screen">
 
-  <!-- WRAPPER UTAMA -->
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-image: url('./src/assets/LogoIcons/bgSenjataDaerah.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* BACK BUTTON ala tes.html */
+    .back-btn {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 0.75rem;
+      border: 5px solid #5d5d5d;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.1s ease-out,
+                  transform 0.1s ease-out,
+                  box-shadow 0.1s ease-out;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      box-shadow: 0 0 0 6px #ffffff;
+      transform: scale(1.03);
+    }
+
+    .back-btn:active { transform: translateY(1px); }
+
+    /* TITLE BAR */
+    .title-bar {
+      width: 100%;
+      height: 55px;
+      border-radius: 20px;
+      border: 5px solid #5d5d5d;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .title-bar-text {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #5d5d5d;
+    }
+
+    /* AREA SCROLL KONTEN ala tes.html */
+    .content-scroll {
+      height: calc(100vh - 85px);
+      overflow-y: auto;
+      padding: 2rem 1rem 2.5rem 1rem;
+    }
+
+    .content-scroll::-webkit-scrollbar { width: 0px; }
+    .content-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.6);
+      border-radius: 10px;
+    }
+
+    section { margin-bottom: 30px; }
+
+    /* ===== (OPSIONAL) FLIP CARD STYLE (biar kalau nanti tempel card, tinggal pakai) ===== */
+    .flip-card {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card.is-flipped .flip-card-inner { transform: rotateY(180deg); }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 0.75rem;
+      border: 5px solid #5d5d5d !important;
+      overflow: hidden;
+    }
+
+    .flip-card-front {
+      background-color: #bebebe !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 !important;
+    }
+    .flip-card-front p { color: #ffffff !important; }
+
+    .flip-card-back {
+      background-color: #ffffff;
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front .top-bar {
+      width: 100%;
+      background-color: #bebebe;
+      padding: 10px 4px 6px 4px;
+      text-align: center;
+    }
+    .flip-card-front .middle-img {
+      width: 100%;
+      background-color: #ffffff;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flip-card-front .bottom-bar {
+      width: 100%;
+      background-color: #bebebe;
+      padding: 8px 4px;
+      text-align: center;
+    }
+
+    .province-title { font-size: 1rem; font-weight: 700; }
+    .province-subtitle { font-size: 0.85rem; font-weight: 600; margin-top: -2px; }
+    .weapon-name { font-size: 1rem; font-weight: 700; }
+
+    .weapon-img { width: 68%; height: auto; object-fit: contain; }
+    .weapon-img-back { width: 100%; height: 100%; object-fit: cover; }
+  </style>
+</head>
+
+<body>
   <div class="min-h-screen flex flex-col">
 
-    <!-- HEADER STICKY -->
-    <header
-      class="sticky top-0 z-20 bg-white border-b border-slate-300 px-4 py-3 flex items-center gap-4"
-    >
-      <!-- Tombol kembali -->
-      <button
-        onclick="window.location.href='HalBelajarKategori.html'"
-        class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center border border-black rounded-xl
-               hover:bg-slate-100 active:scale-95 transition"
-      >
-        <img src="./src/assets/LogoIcons/iconKembali.png" alt="Kembali" class="w-6 h-6 sm:w-7 sm:h-7" />
+    <!-- HEADER ala tes.html -->
+    <header class="sticky top-0 z-30 px-4 py-3 flex items-center gap-4">
+      <!-- ✅ FIX: tombol kembali pakai goNoFade -->
+      <button onclick="goNoFade('HalBelajarKategori.html')" class="back-btn">
+        <img
+          src="./src/assets/LogoIcons/iconKembali.png"
+          class="w-6 h-6 sm:w-7 sm:h-7"
+          alt="Kembali"
+        />
       </button>
 
-      <!-- Bar judul yang tampil seperti button -->
-      <button
-        type="button"
-        class="flex-1 h-10 sm:h-12 rounded-xl border border-slate-400 bg-slate-100
-               flex items-center justify-center px-4
-               text-xs sm:text-base font-bold tracking-wide"
-      >
-        SENJATA DAERAH
-      </button>
+      <!-- Title bar -->
+      <div class="title-bar">
+        <span class="title-bar-text">SENJATA DAERAH</span>
+      </div>
     </header>
 
+
     <!-- KONTEN SCROLL -->
-    <main class="flex-1 px-4 sm:px-6 pb-10 pt-4 space-y-10">
+    <div class="content-scroll">
 
       <!-- ===== PULAU SUMATERA ===== -->
       <section>
-        <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-base sm:text-lg font-bold">PULAU SUMATERA</h2>
-          <div class="flex-1 h-px bg-slate-300"></div>
-        </div>
+        <h2 class="text-lg sm:text-lg font-bold mb-4" style="color: white !important;">
+          PULAU SUMATERA
+        </h2>
 
-        <!-- Grid kartu 4 kolom di layar besar -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- ACEH -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Aceh
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Banda Aceh
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Aceh-Rencong.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Rencong"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Rencong
-                </p>
+              <!-- FRONT -->
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Aceh</p>
+                  <p class="province-subtitle">Ibukota Banda Aceh</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Aceh-Rencong.png"
+                    alt="Rencong"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Rencong</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <!-- BACK -->
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLIAceh-Rencong.png"
                   alt="Foto Asli Rencong"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- SUMATERA UTARA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Sumatera Utara
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Medan
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/SumUt-PisoSurit.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Piso Surit"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Piso Surit
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Sumatera Utara</p>
+                  <p class="province-subtitle">Ibukota Medan</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/SumUt-PisoSurit.png"
+                    alt="Piso Surit"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Piso Surit</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISumUt-PisoSurit.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISumateraUtara-PisoSurit.png"
                   alt="Foto Asli Piso Surit"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- SUMATERA SELATAN -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Sumatera Selatan
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Palembang
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/SumSel-TombakTrisula.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Tombak Trisula"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Tombak Trisula
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Sumatera Selatan</p>
+                  <p class="province-subtitle">Ibukota Palembang</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/SumSel-TombakTrisula.png"
+                    alt="Tombak Trisula"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Tombak Trisula</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISumSel-TombakTrisula.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISumateraSelatan-TombakTrisula.png"
                   alt="Foto Asli Tombak Trisula"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- SUMATERA BARAT -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Sumatera Barat
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Padang
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/SumBar-Karih.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Karih"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Karih
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Sumatera Barat</p>
+                  <p class="province-subtitle">Ibukota Padang</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/SumBar-Karih.png"
+                    alt="Karih"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Karih</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISumBar-Karih.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISumateraBarat-Karih.png"
                   alt="Foto Asli Karih"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- RIAU -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Riau
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Pekanbaru
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Riau-PedangJenawi.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Pedang Jenawi"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Pedang Jenawi
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Riau</p>
+                  <p class="province-subtitle">Ibukota Pekanbaru</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Riau-PedangJenawi.png"
+                    alt="Pedang Jenawi"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Pedang Jenawi</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLIRiau-PedangJenawi.png"
                   alt="Foto Asli Pedang Jenawi"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- KEP. RIAU -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Kepulauan Riau
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Tanjung Pinang
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/KepRiau-BadikTumbukLado.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Badik Tumbuk Lado"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Badik Tumbuk Lado
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Kepulauan Riau</p>
+                  <p class="province-subtitle">Ibukota Tanjung Pinang</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/KepRiau-BadikTumbukLado.png"
+                    alt="Badik Tumbuk Lado"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Badik Tumbuk Lado</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKepRiau-BadikTumbukLado.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKepulauanRiau-BadikTumbukLado.png"
                   alt="Foto Asli Badik Tumbuk Lado"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-<!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- JAMBI -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Jambi
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Jambi
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Jambi-KerisSiginjai.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Keris Siginjai"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Keris Siginjai
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Jambi</p>
+                  <p class="province-subtitle">Ibukota Jambi</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Jambi-KerisSiginjai.png"
+                    alt="Keris Siginjai"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Keris Siginjai</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLIJambi-KerisSiginjai.png"
                   alt="Foto Asli Keris Siginjai"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- LAMPUNG -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Lampung
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Bandar Lampung
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Lampung-Terapang.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Terapang"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Terapang
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Lampung</p>
+                  <p class="province-subtitle">Ibukota Bandar Lampung</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Lampung-Terapang.png"
+                    alt="Terapang"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Terapang</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLILampung-Terapang.png"
                   alt="Foto Asli Terapang"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- BANGKA BELITUNG -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Bangka Belitung
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Pangkal Pinang
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/BangkaBelitung-SiwarPanjang.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Siwar Panjang"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Siwar Panjang
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Bangka Belitung</p>
+                  <p class="province-subtitle">Ibukota Pangkal Pinang</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/BangkaBelitung-SiwarPanjang.png"
+                    alt="Siwar Panjang"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Siwar Panjang</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLIBangkaBelitung-SiwarPanjang.png"
                   alt="Foto Asli Siwar Panjang"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
-        
 
         </div>
       </section>
 
       <!-- ===== PULAU JAWA ===== -->
       <section>
-        <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-base sm:text-lg font-bold">PULAU JAWA</h2>
-          <div class="flex-1 h-px bg-slate-300"></div>
-        </div>
+        <h2 class="text-lg sm:text-lg font-bold mb-4" style="color: white !important;">
+          PULAU JAWA
+        </h2>
 
-        <!-- Grid kartu 4 kolom di layar besar -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- DKI JAKARTA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi DKI Jakarta
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Jakarta
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/DKIJakarta-Golok.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Golok"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Golok
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi DKI Jakarta</p>
+                  <p class="province-subtitle">Ibukota Jakarta</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/DKIJakarta-Golok.png"
+                    alt="Golok"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Golok</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLIDKIJakarta-Golok.png"
                   alt="Foto Asli Golok"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- BANTEN -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Banten
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Serang
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Banten-JaBar-Kujang.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Kujang"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Kujang
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Banten</p>
+                  <p class="province-subtitle">Ibukota Serang</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Banten-JaBar-Kujang.png"
+                    alt="Kujang"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Kujang</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIBanten-JaBar-Kujang.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIBanten-Kujang.png"
                   alt="Foto Asli Kujang"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- JAWA BARAT -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Jawa Barat
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Bandung
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Banten-JaBar-Kujang.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Kujang"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Kujang
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Jawa Barat</p>
+                  <p class="province-subtitle">Ibukota Bandung</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Banten-JaBar-Kujang.png"
+                    alt="Kujang"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Kujang</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIBanten-JaBar-Kujang.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIJawaBarat-Kujang.png"
                   alt="Foto Asli Kujang"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- JAWA TENGAH -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Jawa Tengah
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Semarang
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/JaTeng-Keris.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Keris"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Keris
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Jawa Tengah</p>
+                  <p class="province-subtitle">Ibukota Semarang</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/JaTeng-Keris.png"
+                    alt="Keris"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Keris</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIJaTeng-Keris.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIJawaTengah-Keris.png"
                   alt="Foto Asli Keris"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- DI YOGYAKARTA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi DI Yogyakarta
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Yogyakarta
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/DIYogya-Keris.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Keris"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Keris
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi DI Yogyakarta</p>
+                  <p class="province-subtitle">Ibukota Yogyakarta</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/DIYogya-Keris.png"
+                    alt="Keris"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Keris</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIDIYogya-Keris.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIDIYogyakarta-Keris.png"
                   alt="Foto Asli Keris"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- JAWA TIMUR -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Jawa Timur
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Surabaya
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/JaTim-Celurit.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Celurit"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Celurit
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Jawa Timur</p>
+                  <p class="province-subtitle">Ibukota Surabaya</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/JaTim-Celurit.png"
+                    alt="Celurit"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Celurit</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIJaTim-Celurit.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIJawaTimur-Celurit.png"
                   alt="Foto Asli Celurit"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
@@ -831,263 +674,166 @@
 
       <!-- ===== PULAU KALIMANTAN ===== -->
       <section>
-        <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-base sm:text-lg font-bold">PULAU KALIMANTAN</h2>
-          <div class="flex-1 h-px bg-slate-300"></div>
-        </div>
+        <h2 class="text-lg sm:text-lg font-bold mb-4" style="color: white !important;">
+          PULAU KALIMANTAN
+        </h2>
 
-        <!-- Grid kartu 4 kolom di layar besar -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- KALIMANTAN TIMUR -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Kalimantan Timur
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Samarinda
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/KalTim-MandauKenyah.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Mandau Kenyah"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Mandau Kenyah
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Kalimantan Timur</p>
+                  <p class="province-subtitle">Ibukota Samarinda</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/KalTim-MandauKenyah.png"
+                    alt="Mandau Kenyah"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Mandau Kenyah</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalTim-MandauKenyah.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalimantanTimur-MandauKenyah.png"
                   alt="Foto Asli Mandau Kenyah"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- KALIMANTAN BARAT -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Kalimantan Barat
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Pontianak
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/KalBar-MandauIban.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Mandau Iban"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Mandau Iban
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Kalimantan Barat</p>
+                  <p class="province-subtitle">Ibukota Pontianak</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/KalBar-MandauIban.png"
+                    alt="Mandau Iban"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Mandau Iban</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalBar-MandauIban.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalimantanBarat-MandauIban.png"
                   alt="Foto Asli Mandau Iban"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- KALIMANTAN TENGAH -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Kalimantan Tengah
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Palangkaraya
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/KalTeng-MandauNgaju.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Mandau Ngaju"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Mandau Ngaju
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Kalimantan Tengah</p>
+                  <p class="province-subtitle">Ibukota Palangkaraya</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/KalTeng-MandauNgaju.png"
+                    alt="Mandau Ngaju"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Mandau Ngaju</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalteng-MandauNgaju.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalimantanTengah-MandauNgaju.png"
                   alt="Foto Asli Mandau Ngaju"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- KALIMANTAN SELATAN -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Kalimantan Selatan
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Banjarbaru
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/KalSel-BujakBeliung.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Bujak Beliung"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Bujak Beliung
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Kalimantan Selatan</p>
+                  <p class="province-subtitle">Ibukota Banjarbaru</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/KalSel-BujakBeliung.png"
+                    alt="Bujak Beliung"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Bujak Beliung</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalSel-BujakBeliung.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalimantanSelatan-BujakBeliung.png"
                   alt="Foto Asli Bujak Beliung"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- KALIMANTAN UTARA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Kalimantan Utara
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Tanjung Selor
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/KalUt-Mandau.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Mandau"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Mandau
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Kalimantan Utara</p>
+                  <p class="province-subtitle">Ibukota Tanjung Selor</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/KalUt-Mandau.png"
+                    alt="Mandau"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Mandau</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalUt-Mandau.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIKalimantanUtara-Mandau.png"
                   alt="Foto Asli Mandau"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
@@ -1099,314 +845,198 @@
 
       <!-- ===== PULAU SULAWESI ===== -->
       <section>
-        <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-base sm:text-lg font-bold">PULAU SULAWESI</h2>
-          <div class="flex-1 h-px bg-slate-300"></div>
-        </div>
+        <h2 class="text-lg sm:text-lg font-bold mb-4" style="color: white !important;">
+          PULAU SULAWESI
+        </h2>
 
-        <!-- Grid kartu 4 kolom di layar besar -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- SULAWESI UTARA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Sulawesi Utara
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Manado
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Keris.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Keris"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Keris
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Sulawesi Utara</p>
+                  <p class="province-subtitle">Ibukota Manado</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/SulUt-Keris.png"
+                    alt="Keris"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Keris</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulUt-Keris.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulawesiUtara-Keris.png"
                   alt="Foto Asli Keris"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- SULAWESI BARAT -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Sulawesi Barat
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Mamuju
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/SulBar-Tombak.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Tombak"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Tombak
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Sulawesi Barat</p>
+                  <p class="province-subtitle">Ibukota Mamuju</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/SulBar-Tombak.png"
+                    alt="Tombak"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Tombak</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulBar-Tombak.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulawesiBarat-Tombak.png"
                   alt="Foto Asli Tombak"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- SULAWESI TENGAH -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Sulawesi Tengah
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Palu
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/SulTeng-Pasatimpo.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Pasatimpo"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Pasatimpo
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Sulawesi Tengah</p>
+                  <p class="province-subtitle">Ibukota Palu</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/SulTeng-Pasatimpo.png"
+                    alt="Pasatimpo"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Pasatimpo</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulTeng-Pasatimpo.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulawesiTengah-Pasatimpo.png"
                   alt="Foto Asli Pasatimpo"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- GORONTALO -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Gorontalo
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Gorontalo
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Gorontalo-Badik.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Badik"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Badik
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Gorontalo</p>
+                  <p class="province-subtitle">Ibukota Gorontalo</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Gorontalo-Badik.png"
+                    alt="Badik"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Badik</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLIGorontalo-Badik.png"
                   alt="Foto Asli Badik"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- SULAWESI TENGGARA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Sulawesi Tenggara
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Kendari
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/SulTenggara-Keris.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Keris"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Keris
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Sulawesi Tenggara</p>
+                  <p class="province-subtitle">Ibukota Kendari</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/SulTenggara-Keris.png"
+                    alt="Keris"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Keris</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulTenggara-Keris.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulawesiTenggara-Keris.png"
                   alt="Foto Asli Keris"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- SULAWESI SELATAN -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Sulawesi Selatan
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Makassar
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Sulsel-BadikLompoBattang.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Badik Lompo Battang"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Badik Lompo Battang
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Sulawesi Selatan</p>
+                  <p class="province-subtitle">Ibukota Makassar</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Sulsel-BadikLompoBattang.png"
+                    alt="Badik Lompo Battang"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Badik Lompo Battang</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulsel-BadikLompoBattang.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLISulawesiSelatan-BadikLompoBattang.png"
                   alt="Foto Asli Badik Lompo Battang"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
@@ -1416,163 +1046,104 @@
         </div>
       </section>
 
-      <!-- ===== PULAU BALI DAN NUSA TENGGARA ===== -->
+      <!-- ===== BALI & NUSA TENGGARA ===== -->
       <section>
-        <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-base sm:text-lg font-bold">PULAU BALI DAN NUSA TENGGARA</h2>
-          <div class="flex-1 h-px bg-slate-300"></div>
-        </div>
+        <h2 class="text-lg sm:text-lg font-bold mb-4" style="color: white !important;">
+          PULAU BALI DAN NUSA TENGGARA
+        </h2>
 
-        <!-- Grid kartu 4 kolom di layar besar -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- BALI -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Bali
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Denpasar
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Bali-Keris.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Keris"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Keris
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Bali</p>
+                  <p class="province-subtitle">Ibukota Denpasar</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Bali-Keris.png"
+                    alt="Keris"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Keris</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLIBali-Keris.png"
                   alt="Foto Asli Keris"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- NTB -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Nusa Tenggara Barat
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Mataram
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/NTB-Sampari.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Sampari"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Sampari
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Nusa Tenggara Barat</p>
+                  <p class="province-subtitle">Ibukota Mataram</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/NTB-Sampari.png"
+                    alt="Sampari"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Sampari</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLINTB-Sampari.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLINusaTenggaraBarat-Sampari.png"
                   alt="Foto Asli Sampari"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- NTT -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Nusa Tenggara Timur
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Kupang
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/NTT-Sundu.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Sundu"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Sundu
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Nusa Tenggara Timur</p>
+                  <p class="province-subtitle">Ibukota Kupang</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/NTT-Sundu.png"
+                    alt="Sundu"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Sundu</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLINTT-Sundu.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLINusaTenggaraTimur-Sundu.png"
                   alt="Foto Asli Sundu"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
@@ -1584,110 +1155,70 @@
 
       <!-- ===== PULAU MALUKU ===== -->
       <section>
-        <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-base sm:text-lg font-bold">PULAU MALUKU</h2>
-          <div class="flex-1 h-px bg-slate-300"></div>
-        </div>
+        <h2 class="text-lg sm:text-lg font-bold mb-4" style="color: white !important;">
+          PULAU MALUKU
+        </h2>
 
-        <!-- Grid kartu 4 kolom di layar besar -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- MALUKU UTARA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Maluku Utara
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Sofifi
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Mal-MalUt-ParangSalawaku.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Parang Salawaku"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Parang Salawaku
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Maluku Utara</p>
+                  <p class="province-subtitle">Ibukota Sofifi</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Mal-MalUt-ParangSalawaku.png"
+                    alt="Parang Salawaku"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Parang Salawaku</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIMal-MalUt-ParangSalawaku.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIMalukuUtara-ParangSalawaku.png"
                   alt="Foto Asli Parang Salawaku"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- MALUKU -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Maluku
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Ambon
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Mal-MalUt-ParangSalawaku.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Parang Salawaku"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Parang Salawaku
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Maluku</p>
+                  <p class="province-subtitle">Ibukota Ambon</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Mal-MalUt-ParangSalawaku.png"
+                    alt="Parang Salawaku"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Parang Salawaku</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIMal-MalUt-ParangSalawaku.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIMaluku-ParangSalawaku.png"
                   alt="Foto Asli Parang Salawaku"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
@@ -1699,314 +1230,198 @@
 
       <!-- ===== PULAU PAPUA ===== -->
       <section>
-        <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-base sm:text-lg font-bold">PULAU PAPUA</h2>
-          <div class="flex-1 h-px bg-slate-300"></div>
-        </div>
+        <h2 class="text-lg sm:text-lg font-bold mb-4" style="color: white !important;">
+          PULAU PAPUA
+        </h2>
 
-        <!-- Grid kartu 4 kolom di layar besar -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- PAPUA BARAT -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Papua Barat
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Manokwari
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/PapBar-BusurPanah.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Busur Panah"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Busur Panah
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Papua Barat</p>
+                  <p class="province-subtitle">Ibukota Manokwari</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/PapBar-BusurPanah.png"
+                    alt="Busur Panah"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Busur dan Panah</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapBar-BusurPanah.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapuaBarat-BusurPanah.png"
                   alt="Foto Asli Busur Panah"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- PAPUA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Papua
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Jayapura
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/Papua-BelatiTulangKasuari.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Belati Tulang Kasuari"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Belati Tulang Kasuari
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Papua</p>
+                  <p class="province-subtitle">Ibukota Jayapura</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/Papua-BelatiTulangKasuari.png"
+                    alt="Belati Tulang Kasuari"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Belati Tulang Kasuari</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
                   src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapua-BelatiTulangKasuari.png"
                   alt="Foto Asli Belati Tulang Kasuari"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- PAPUA SELATAN -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Papua Selatan
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Kabupaten Merauke
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/PapSel-Pisuwe.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Pisuwe"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Pisuwe
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Papua Selatan</p>
+                  <p class="province-subtitle">Ibukota Kabupaten Merauke</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/PapSel-Pisuwe.png"
+                    alt="Pisuwe"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Pisuwe</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapSel-Pisuwe.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapuaSelatan-Pisuwe.png"
                   alt="Foto Asli Pisuwe"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- PAPUA TENGAH -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Papua Tengah
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Kabupaten Nabire
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/PapTeng-PisauBelati.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Pisau Belati"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Pisau Belati
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Papua Tengah</p>
+                  <p class="province-subtitle">Ibukota Kabupaten Nabire</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/PapTeng-PisauBelati.png"
+                    alt="Pisau Belati"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Pisau Belati</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapTeng-PisauBelati.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapuaTengah-PisauBelati.png"
                   alt="Foto Asli Pisau Belati"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- PAPUA PEGUNUNGAN -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Papua Pegunungan
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Kabupaten Jayawijaya
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/PaPeg-ParangPapua.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Parang Papua"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Parang Papua
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Papua Pegunungan</p>
+                  <p class="province-subtitle">Ibukota Kabupaten Jayawijaya</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/PaPeg-ParangPapua.png"
+                    alt="Parang Papua"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Parang Papua</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPaPeg-ParangPapua.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapuaPegunungan-ParangPapua.png"
                   alt="Foto Asli Parang Papua"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
             </div>
           </div>
 
-          <!-- CARD FLIP WRAPPER -->
-          <div
-            class="flip-card w-full aspect-square"
-            onclick="this.classList.toggle('is-flipped')"
-          >
-            <!-- CARD INNER -->
-            <div class="flip-card-inner relative w-full h-full">
+          <!-- PAPUA BARAT DAYA -->
+          <div class="flip-card" onclick="this.classList.toggle('is-flipped')">
+            <div class="flip-card-inner">
 
-              <!-- FRONT (Informasi) -->
-              <div
-                class="flip-card-front absolute inset-0 z-10
-                       bg-white border-[3px] border-black rounded-xl
-                       py-3 px-4 flex flex-col items-center text-center"
-              >
-                <p class="text-base sm:text-lg font-semibold leading-tight">
-                  Provinsi Papua Barat Daya
-                </p>
-
-                <p class="text-sm sm:text-base font-medium text-gray-800 -mt-1">
-                  Ibukota Sorong
-                </p>
-
-                <!-- Garis pemisah (ini yang kamu mau) -->
-                <div class="w-full border-t-2 border-black my-2"></div>
-
-                <img
-                  src="./src/assets/GambarChibi-SenjataDaerah/PBD-KapakPapua.png"
-                  class="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 object-contain my-2"
-                  alt="Kapak Papua"
-                />
-
-                <p class="text-base sm:text-lg font-semibold leading-tight mt-2">
-                  Kapak Papua
-                </p>
+              <div class="flip-card-front">
+                <div class="top-bar">
+                  <p class="province-title">Provinsi Papua Barat Daya</p>
+                  <p class="province-subtitle">Ibukota Sorong</p>
+                </div>
+                <div class="middle-img">
+                  <img
+                    src="./src/assets/GambarChibi-SenjataDaerah/PBD-KapakPapua.png"
+                    alt="Kapak Papua"
+                    class="weapon-img"
+                  />
+                </div>
+                <div class="bottom-bar">
+                  <p class="weapon-name">Kapak Papua</p>
+                </div>
               </div>
 
-              <!-- BACK (Foto Asli Full Cover) -->
-              <div
-                class="flip-card-back absolute inset-0
-                       bg-white border-[3px] border-black rounded-xl overflow-hidden"
-              >
+              <div class="flip-card-back">
                 <img
-                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPBD-KapakPapua.png"
+                  src="./src/assets/GambarASLI-SenjataDaerah/ASLIPapuaBaratDaya-KapakPapua.png"
                   alt="Foto Asli Kapak Papua"
-                  class="w-full h-full object-cover"
+                  class="weapon-img-back"
                 />
               </div>
 
@@ -2016,10 +1431,11 @@
         </div>
       </section>
 
-    </main>
+    </div> <!-- end content-scroll -->
+
   </div>
 
-  <!-- TOAST NOTIFIKASI -->
+  <!-- TOAST NOTIFIKASI (tetap dari file lama) -->
   <div
     id="flip-toast"
     class="fixed bottom-4 right-4
@@ -2029,14 +1445,11 @@
            opacity-0 translate-y-3 pointer-events-none
            transition-all duration-500 z-50 max-w-xs"
   >
-    <!-- ICON GANTI DENGAN GAMBAR -->
     <img
       src="./src/assets/LogoIcons/iconInfo.png"
       alt="Info"
       class="w-10 h-10 sm:w-6 sm:h-6 object-contain"
     />
-
-    <!-- TEKS LEBIH BESAR -->
     <p class="text-sm sm:text-base font-medium leading-snug">
       Ketuk kartu untuk membalik dan melihat gambar asli senjata daerahnya!
     </p>
@@ -2048,16 +1461,79 @@
       const toast = document.getElementById("flip-toast");
       if (!toast) return;
 
-      // Muncul pelan
       setTimeout(() => {
         toast.classList.remove("opacity-0", "translate-y-3", "pointer-events-none");
-      }, 2100); // sedikit delay biar terasa halus
+      }, 2100);
 
-      // Hilang lagi setelah beberapa detik
       setTimeout(() => {
         toast.classList.add("opacity-0", "translate-y-3", "pointer-events-none");
-      }, 6000); // sekitar 3 detik tampil
+      }, 6000);
     });
   </script>
+
+  <!-- ✅ BGM UTAMA -->
+<audio id="bgm-utama" src="./src/assets/Sounds/soundUtama.mp3" loop preload="auto"></audio>
+
+<script>
+  const LS_TRACK = "BGM_TRACK";
+  const LS_UTAMA_TIME = "BGM_UTAMA_TIME";
+  const SS_AUTOPLAY = "AUTO_PLAY_BGM";
+  const TARGET_VOL = 0.6;
+
+  const bgm = document.getElementById("bgm-utama");
+  let unlocked = false;
+
+  function saveUtamaTime() {
+    try { localStorage.setItem(LS_UTAMA_TIME, String(bgm.currentTime || 0)); } catch {}
+  }
+
+  async function playUtamaWithResume_NOFADE() {
+    localStorage.setItem(LS_TRACK, "utama");
+
+    let resume = 0;
+    try { resume = parseFloat(localStorage.getItem(LS_UTAMA_TIME) || "0") || 0; } catch {}
+
+    try {
+      bgm.volume = TARGET_VOL;
+      try { bgm.currentTime = resume; } catch(e) {}
+      await bgm.play();
+      unlocked = true;
+    } catch (e) {
+      console.warn("BGM utama belum bisa diputar:", e);
+    }
+  }
+
+  function unlockGesture() {
+    if (unlocked) return;
+    playUtamaWithResume_NOFADE();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const shouldAuto = sessionStorage.getItem(SS_AUTOPLAY) === "1";
+    sessionStorage.removeItem(SS_AUTOPLAY);
+    if (shouldAuto) playUtamaWithResume_NOFADE();
+  });
+
+  document.addEventListener("pointerdown", unlockGesture, { once:true });
+  document.addEventListener("keydown", unlockGesture, { once:true });
+
+  setInterval(() => {
+    if (!bgm.paused && !bgm.ended) saveUtamaTime();
+  }, 1000);
+
+  window.addEventListener("beforeunload", () => {
+    saveUtamaTime();
+    try { bgm.pause(); } catch {}
+  });
+
+  function goNoFade(url) {
+    sessionStorage.setItem(SS_AUTOPLAY, "1");
+    localStorage.setItem(LS_TRACK, "utama");
+    saveUtamaTime();
+    location.href = url;
+  }
+  window.goNoFade = goNoFade;
+</script>
+
 </body>
 </html>

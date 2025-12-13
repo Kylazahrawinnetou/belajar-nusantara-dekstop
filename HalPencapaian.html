@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pencapaian – Kuis Belajar Nusantara</title>
+  <link rel="stylesheet" href="./dist/output.css" />
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-image: url('./src/assets/LogoIcons/bgPencapaian.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-back {
+      position: absolute;
+      top: 20px;
+      left: 22px;
+      width: 60px;
+      height: 60px;
+      background-color: #f9e4c7;
+      border: 5px solid #000;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.1s ease-out;
+      cursor: pointer;
+      z-index: 20;
+    }
+    .btn-back:hover { background-color: #ffffff; box-shadow: 0 0 0 4px #ffffff; }
+    .btn-back:active { transform: scale(0.9); }
+    .btn-back img { width: 60%; height: 60%; object-fit: contain; }
+
+    .wardrobe-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(850px, 99vw);
+      overflow: hidden;
+    }
+
+    .wardrobe-img {
+      width: 100%;
+      display: block;
+      pointer-events: none;
+    }
+
+    .wardrobe-content {
+      position: absolute;
+      left: 50%;
+      top: 29%;
+      transform: translateX(-50%);
+      width: 76.5%;
+      height: 72%;
+      overflow-y: auto;
+      padding-right: 40px;
+      padding-left: 50px;
+      box-sizing: border-box;
+    }
+
+    .wardrobe-content::-webkit-scrollbar { width: 8px; }
+    .wardrobe-content::-webkit-scrollbar-track { background: transparent; }
+    .wardrobe-content::-webkit-scrollbar-thumb {
+      background: rgba(115,55,28,1);
+      border-radius: 999px;
+    }
+
+    .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 30px;
+      transition: 0.2s ease-out;
+    }
+
+    .badge-row--unlocked {
+      opacity: 1;
+      filter: none;
+    }
+
+    .badge-row--locked {
+      opacity: 0.55;
+      filter: grayscale(1);
+    }
+
+    .badge-icon-box {
+      width: 220px;
+      aspect-ratio: 1/1;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .badge-icon-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .badge-info {
+      background: rgba(55, 33, 5, 0.6);
+      border: 5px solid rgba(115, 55, 28, 1);
+      border-radius: 18px;
+      padding: 25px 20px;
+      flex: 1;
+      font-size: 0.88rem;
+      color: #fff;
+    }
+    .badge-name { font-weight: 700; margin-bottom: 4px; }
+    .badge-line { height: 2px; background: rgba(0,0,0,0.6); margin: 4px 0 6px; }
+    .badge-desc { font-size: 0.8rem; }
+  </style>
+</head>
+
+<body>
+
+<button class="btn-back" id="btnBack">
+  <img src="./src/assets/LogoIcons/iconKembali.png" />
+</button>
+
+<div class="wardrobe-wrapper">
+  <img src="./src/assets/LogoIcons/lemariPencapaian.png" class="wardrobe-img" />
+
+  <div class="wardrobe-content" id="badgeList">
+  </div>
+</div>
+
+<!-- ✅ BGM PENCAPAIAN -->
+<audio id="bgm-pencapaian" src="./src/assets/Sounds/soundPencapaian.mp3" loop preload="auto"></audio>
+
+<script>
+/* ===============================
+      KONFIGURASI BADGE
+   =============================== */
+
+const BADGE_CONFIG = [
+  { id: "badge_level_11_serindit",
+    name: "Burung Serindit",
+    desc: "Mencapai level 11 (akhir Mode Mudah).",
+    icon: "./src/assets/LogoIcons/badge_serindit.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_serindit.png"
+  },
+  { id: "badge_level_26_pesut",
+    name: "Pesut Mahakam",
+    desc: "Mencapai level 26 (akhir Mode Normal).",
+    icon: "./src/assets/LogoIcons/badge_pesut.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_pesut.png"
+  },
+  { id: "badge_level_45_harimau",
+    name: "Harimau Sumatera",
+    desc: "Menyelesaikan semua 45 level kuis.",
+    icon: "./src/assets/LogoIcons/badge_harimau.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_harimau.png"
+  },
+  { id: "badge_streak_5_kepodang",
+    name: "Burung Kepodang",
+    desc: "Menjawab benar 5 soal beruntun tanpa salah.",
+    icon: "./src/assets/LogoIcons/badge_kepodang.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_kepodang.png"
+  },
+  { id: "badge_streak_10_gajah",
+    name: "Gajah Sumatera",
+    desc: "Menjawab benar 10 soal beruntun tanpa salah.",
+    icon: "./src/assets/LogoIcons/badge_gajah.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_gajah.png"
+  },
+  { id: "badge_perfect_easy_jalak",
+    name: "Burung Jalak Bali",
+    desc: "Mode Mudah: semua soal tanpa kesalahan.",
+    icon: "./src/assets/LogoIcons/badge_jalak.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_jalak.png"
+  },
+  { id: "badge_perfect_normal_elang",
+    name: "Burung Elang Bondol",
+    desc: "Mode Normal: semua soal tanpa kesalahan.",
+    icon: "./src/assets/LogoIcons/badge_elang.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_elang.png"
+  },
+  { id: "badge_perfect_hard_komodo",
+    name: "Komodo",
+    desc: "Mode Sulit: semua soal tanpa kesalahan.",
+    icon: "./src/assets/LogoIcons/badge_komodo.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_komodo.png"
+  },
+  { id: "badge_speed_normal_tarsius",
+    name: "Tarsius",
+    desc: "Mode Normal: waktu rata-rata < 15 detik.",
+    icon: "./src/assets/LogoIcons/badge_tarsius.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_tarsius.png"
+  },
+  { id: "badge_accuracy_normal_kasuari",
+    name: "Burung Kasuari",
+    desc: "Mode Normal: akurasi ≥ 80%.",
+    icon: "./src/assets/LogoIcons/badge_kasuari.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_kasuari.png"
+  },
+  { id: "badge_score_100_belida",
+    name: "Ikan Belida",
+    desc: "Mencapai total 100 poin.",
+    icon: "./src/assets/LogoIcons/badge_belida.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_belida.png"
+  },
+  { id: "badge_score_150_kuau",
+    name: "Burung Kuau Raja",
+    desc: "Mencapai total 150 poin.",
+    icon: "./src/assets/LogoIcons/badge_kuau.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_kuau.png"
+  },
+  { id: "badge_score_200_cendrawasih",
+    name: "Burung Cendrawasih",
+    desc: "Mencapai total 200 poin.",
+    icon: "./src/assets/LogoIcons/badge_cendrawasih.png",
+    lockedIcon: "./src/assets/LogoIcons/badge_locked_cendrawasih.png"
+  },
+];
+
+const BADGE_STORAGE_KEY = "nusantara_badges_v1";
+
+function getUnlockedIds() {
+  try {
+    const raw = localStorage.getItem(BADGE_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function renderBadgeList() {
+  const container = document.getElementById("badgeList");
+  container.innerHTML = "";
+
+  const unlocked = new Set(getUnlockedIds());
+
+  BADGE_CONFIG.forEach(badge => {
+    const locked = !unlocked.has(badge.id);
+
+    const row = document.createElement("div");
+    row.className = locked ? "badge-row badge-row--locked" : "badge-row badge-row--unlocked";
+
+    const iconPath = locked ? badge.lockedIcon : badge.icon;
+    const nameText = locked ? "Terkunci" : badge.name;
+    const descText = locked ? "Mainkan kuis dan cari tahu cara membukanya." : badge.desc;
+
+    row.innerHTML = `
+      <div class="badge-icon-box">
+        <img src="${iconPath}" alt="${nameText}" />
+      </div>
+
+      <div class="badge-info">
+        <div class="badge-name">${nameText}</div>
+        <div class="badge-line"></div>
+        <div class="badge-desc">${descText}</div>
+      </div>
+    `;
+
+    container.appendChild(row);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", renderBadgeList);
+
+/* ===============================
+      ✅ BGM PENCAPAIAN + TRANSISI
+   =============================== */
+const LS_TRACK = "BGM_TRACK";
+const LS_UTAMA_TIME = "BGM_UTAMA_TIME";
+const LS_PENC_TIME  = "BGM_PENC_TIME";
+const SS_AUTOPLAY = "AUTO_PLAY_BGM";
+
+const TARGET_VOL = 0.6;
+const FADE_OUT_MS = 420;
+const FADE_IN_MS  = 480;
+
+const btnBack = document.getElementById("btnBack");
+const bgm = document.getElementById("bgm-pencapaian");
+let unlocked = false;
+
+function clamp01(v){ return Math.max(0, Math.min(1, v)); }
+
+function fadeVolume(audioEl, from, to, ms, done) {
+  if (!audioEl) return done && done();
+  const steps = 18;
+  const stepMs = Math.max(10, Math.floor(ms / steps));
+  let i = 0;
+  audioEl.volume = clamp01(from);
+
+  const timer = setInterval(() => {
+    i++;
+    const t = i / steps;
+    audioEl.volume = clamp01(from + (to - from) * t);
+    if (i >= steps) {
+      clearInterval(timer);
+      audioEl.volume = clamp01(to);
+      done && done();
+    }
+  }, stepMs);
+}
+
+function savePencTime() {
+  try {
+    localStorage.setItem(LS_PENC_TIME, String(bgm.currentTime || 0));
+  } catch {}
+}
+
+async function playPencWithResume() {
+  // berada di page ini berarti track = pencapaian
+  localStorage.setItem(LS_TRACK, "pencapaian");
+
+  let resume = 0;
+  try {
+    resume = parseFloat(localStorage.getItem(LS_PENC_TIME) || "0") || 0;
+  } catch {}
+
+  try {
+    bgm.volume = 0;
+    try { bgm.currentTime = resume; } catch(e) {}
+    await bgm.play();
+    unlocked = true;
+    fadeVolume(bgm, 0, TARGET_VOL, FADE_IN_MS);
+  } catch (e) {
+    console.warn("BGM pencapaian belum bisa diputar:", e);
+  }
+}
+
+function unlockGesture() {
+  if (unlocked) return;
+  playPencWithResume();
+}
+
+// auto play kalau datang dari klik halaman sebelumnya
+document.addEventListener("DOMContentLoaded", () => {
+  const shouldAuto = sessionStorage.getItem(SS_AUTOPLAY) === "1";
+  sessionStorage.removeItem(SS_AUTOPLAY);
+  if (shouldAuto) playPencWithResume();
+});
+
+// fallback gesture
+document.addEventListener("pointerdown", unlockGesture, { once: true });
+document.addEventListener("keydown", unlockGesture, { once: true });
+
+// simpan time tiap 1 detik
+setInterval(() => {
+  if (!bgm.paused && !bgm.ended) savePencTime();
+}, 1000);
+
+// sebelum unload: simpan time
+window.addEventListener("beforeunload", () => {
+  savePencTime();
+  try { bgm.pause(); } catch {}
+});
+
+// pindah halaman dengan fade out (balik ke utama)
+function goWithFade(url) {
+  // klik = gesture, bantu unlock
+  unlockGesture();
+
+  // next page minta autoplay utama
+  sessionStorage.setItem(SS_AUTOPLAY, "1");
+  localStorage.setItem(LS_TRACK, "utama");
+
+  // simpan progress pencapaian
+  savePencTime();
+
+  if (!unlocked) {
+    location.href = url;
+    return;
+  }
+
+  const fromVol = (typeof bgm.volume === "number") ? bgm.volume : TARGET_VOL;
+  fadeVolume(bgm, fromVol, 0, FADE_OUT_MS, () => {
+    try { bgm.pause(); } catch {}
+    location.href = url;
+  });
+}
+
+btnBack.addEventListener("click", () => goWithFade("HalPenyambutanReal.html"));
+</script>
+
+</body>
+</html>

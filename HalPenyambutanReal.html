@@ -2,111 +2,242 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Hal Penyambutan – Kuis Belajar Nusantara</title>
-  <!-- Tailwind hasil build -->
+  <title>Hal Penyambutan Real – Kuis Belajar Nusantara</title>
   <link rel="stylesheet" href="./dist/output.css" />
+
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background-image: url('./src/assets/LogoIcons/bgFirst.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .main-welcome {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 18vh;
+      gap: 24px;
+      position: relative;
+    }
+
+    .circle-row { display: flex; gap: 3rem; margin-top: 6px; }
+
+    .btn-circle {
+      width: 13rem;
+      height: 13rem;
+      border-radius: 9999px;
+      border: 5px solid #000;
+      background-color: #f9e4c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.1s ease-out;
+    }
+    .btn-circle:hover {
+      background-color: #D99C66;
+      box-shadow: 0 0 0 8px white;
+      transform: scale(1.10);
+    }
+    .btn-circle:active { transform: scale(0.97); }
+    .btn-circle img { width: 90%; height: 90%; object-fit: contain; }
+
+    .btn-box, .btn-panel {
+      border: 5px solid black;
+      background-color: #f9e4c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.1s ease-out;
+      cursor: pointer;
+    }
+    .btn-box { border-radius: 0.9rem; }
+    .btn-panel { border-radius: 1.3rem; }
+
+    .btn-box:hover, .btn-panel:hover {
+      background-color: #f9e4c7;
+      box-shadow: 0 0 0 5px #fff;
+      transform: scale(1.03);
+    }
+    .btn-box:active, .btn-panel:active { transform: scale(0.97); }
+  </style>
 </head>
-<body class="min-h-screen bg-white">
 
-  <!-- Kanvas utama, full screen -->
-  <main class="relative w-full min-h-screen flex items-center justify-center">
+<body>
+  <main class="main-welcome">
+    <img src="./src/assets/LogoIcons/LogoAplFit.png"
+      style="max-height:250px;width:auto;margin-bottom:16px;" />
 
-    <!-- Kolom tengah: logo + 2 tombol bulat -->
-    <div class="flex flex-col items-center gap-10 sm:gap-14">
-
-      <!-- LOGO -->
-      <img
-        src="./src/assets/LogoIcons/LogoSementara.png"
-        alt="Logo Kuis Belajar Nusantara"
-        class="w-64 sm:w-80 max-w-full object-contain"
-      />
-
-      <!-- Tombol bulat (MAP & PLAY) -->
-      <div class="flex gap-10 sm:gap-14">
-        <!-- Tombol MAP -->
-        <button
-          id="btnMap"
-          class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border border-black
-                 bg-slate-100 flex items-center justify-center
-                 hover:bg-slate-200 active:scale-95 transition"
-        >
-          <img
-            src="./src/assets/LogoIcons/iconPeta.png"
-            alt="Pilih Wilayah"
-            class="w-3/5 h-3/5 object-contain"
-          />
-        </button>
-
-        <!-- Tombol PLAY -->
-        <button
-          id="btnPlay"
-          class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border border-black
-                 bg-slate-100 flex items-center justify-center
-                 hover:bg-slate-200 active:scale-95 transition"
-        >
-          <img
-            src="./src/assets/LogoIcons/iconMain.png"
-            alt="Mulai Kuis"
-            class="w-3/5 h-3/5 object-contain"
-          />
-        </button>
-      </div>
+    <div class="circle-row">
+      <button id="btnMap" class="btn-circle">
+        <img src="./src/assets/LogoIcons/LogoAyoMenjelajah.png" alt="Ayo Menjelajah">
+      </button>
+      <button id="btnPlay" class="btn-circle">
+        <img src="./src/assets/LogoIcons/LogoMainKuis.png" alt="Main Kuis">
+      </button>
     </div>
 
-    <!-- Tombol kanan atas: KELUAR -->
-    <button
-      id="btnKeluar"
-      class="absolute top-6 right-6 w-14 h-14 sm:w-16 sm:h-16
-             rounded-2xl border border-black bg-white
-             flex items-center justify-center
-             hover:bg-slate-100 active:scale-95 transition"
-    >
-      <img
-        src="./src/assets/LogoIcons/iconKeluar.png"
-        alt="Keluar"
-        class="w-3/5 h-3/5 object-contain"
-      />
+    <button id="btnKeluar" class="btn-box"
+      style="position:absolute;top:24px;right:24px;width:58px;height:58px;">
+      <img src="./src/assets/LogoIcons/iconKeluar.png" style="width:60%;height:60%;" alt="Keluar">
     </button>
 
-    <button
-  id="btnPencapaian"
-  class="absolute top-28 right-6 w-14 h-32 sm:w-16 sm:h-40
-         rounded-3xl border border-black bg-slate-100
-         flex items-center justify-center
-         hover:bg-slate-200 active:scale-95 transition"
->
-  <img
-    src="./src/assets/LogoIcons/iconRewards.png"
-    alt="Pencapaian"
-    class="w-2/3 h-2/3 object-contain"
-  />
-</button>
-
+    <button id="btnPencapaian" class="btn-panel"
+      style="position:absolute;top:100px;right:24px;width:58px;height:130px;">
+      <img src="./src/assets/LogoIcons/iconPencapaian.png" style="width:70%;height:70%;object-fit:contain;" alt="Pencapaian">
+    </button>
   </main>
 
-  <!-- Logic tombol (sementara ke halaman dummy, bisa kamu ganti nanti) -->
+  <!-- ✅ BGM UTAMA -->
+  <audio id="bgm-utama" src="./src/assets/Sounds/soundUtama.mp3" loop></audio>
+
   <script>
-    // nanti ganti dengan halaman beneran sesuai flow kamu
-    document.getElementById("btnPlay").addEventListener("click", function () {
-      // contoh: menuju halaman pilih mode / soal
-      window.location.href = "HalMainKuis.html";
+    const LS_TRACK = "BGM_TRACK";
+    const LS_UTAMA_TIME = "BGM_UTAMA_TIME";
+    const SS_AUTOPLAY = "AUTO_PLAY_BGM";
+
+    const TARGET_VOL = 0.6;
+    const FADE_OUT_MS = 420;
+    const FADE_IN_MS  = 480;
+
+    const bgm = document.getElementById("bgm-utama");
+    let unlocked = false;
+
+    function clamp01(v){ return Math.max(0, Math.min(1, v)); }
+
+    function fadeVolume(audioEl, from, to, ms, done) {
+      if (!audioEl) return done && done();
+      const steps = 18;
+      const stepMs = Math.max(10, Math.floor(ms / steps));
+      let i = 0;
+      audioEl.volume = clamp01(from);
+
+      const timer = setInterval(() => {
+        i++;
+        const t = i / steps;
+        audioEl.volume = clamp01(from + (to - from) * t);
+        if (i >= steps) {
+          clearInterval(timer);
+          audioEl.volume = clamp01(to);
+          done && done();
+        }
+      }, stepMs);
+    }
+
+    function saveUtamaTime() {
+      try { localStorage.setItem(LS_UTAMA_TIME, String(bgm.currentTime || 0)); } catch {}
+    }
+
+    async function playUtamaResume_FADEIN() {
+      localStorage.setItem(LS_TRACK, "utama");
+
+      let resume = 0;
+      try { resume = parseFloat(localStorage.getItem(LS_UTAMA_TIME) || "0") || 0; } catch {}
+
+      try {
+        bgm.volume = 0;
+        try { bgm.currentTime = resume; } catch(e) {}
+        await bgm.play();
+        unlocked = true;
+
+        fadeVolume(bgm, 0, TARGET_VOL, FADE_IN_MS);
+      } catch(e) {
+        console.warn("BGM utama belum bisa diputar:", e);
+      }
+    }
+
+    function unlockGesture() {
+      if (unlocked) return;
+      playUtamaResume_FADEIN();
+    }
+
+    // ✅ FIX UTAMA: listener gesture SELALU dipasang (biar tap layar selalu bisa nyalain musik)
+    (function bindUnlockAlways(){
+      const opt = { once:true, capture:true };
+      window.addEventListener("pointerdown", unlockGesture, opt);
+      window.addEventListener("touchstart", unlockGesture, opt);
+      window.addEventListener("mousedown", unlockGesture, opt);
+      window.addEventListener("click", unlockGesture, opt);
+      window.addEventListener("keydown", unlockGesture, opt);
+    })();
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const shouldAuto =
+        sessionStorage.getItem(SS_AUTOPLAY) === "1" ||
+        sessionStorage.getItem("AUTO_PLAY_UTAMA") === "1";
+
+      sessionStorage.removeItem(SS_AUTOPLAY);
+      sessionStorage.removeItem("AUTO_PLAY_UTAMA");
+
+      if (shouldAuto) {
+        await playUtamaResume_FADEIN();
+      }
     });
 
-    document.getElementById("btnMap").addEventListener("click", function () {
-      // contoh: menuju peta Nusantara
-      window.location.href = "HalBelajarKategori.html";
+    setInterval(() => {
+      if (!bgm.paused && !bgm.ended) saveUtamaTime();
+    }, 1000);
+
+    window.addEventListener("beforeunload", () => {
+      saveUtamaTime();
+      try { bgm.pause(); } catch {}
     });
 
-    document.getElementById("btnKeluar").addEventListener("click", function () {
-      // contoh: kembali ke halaman login / awal
-      window.location.href = "HalMasuk.html";
-    });
+    // ✅ NAV helper: NO FADE (buat halaman yg memang mau nyambung tanpa fade)
+    function goNoFade(url, nextTrack) {
+      sessionStorage.setItem(SS_AUTOPLAY, "1");
+      if (nextTrack) localStorage.setItem(LS_TRACK, nextTrack);
+      saveUtamaTime();
+      location.href = url;
+    }
 
-    document.getElementById("btnPencapaian").addEventListener("click", function () {
-  window.location.href = "HalPencapaian.html";
-});
+    // ✅ NAV helper: WITH FADE OUT (buat Keluar / transisi hal lain)
+    function goWithFadeOut(url, nextTrack) {
+      unlockGesture(); // klik = gesture (bantu unlock)
 
+      sessionStorage.setItem(SS_AUTOPLAY, "1");
+      if (nextTrack) localStorage.setItem(LS_TRACK, nextTrack);
 
+      saveUtamaTime();
+
+      if (!unlocked || bgm.paused) {
+        location.href = url;
+        return;
+      }
+
+      const fromVol = (typeof bgm.volume === "number") ? bgm.volume : TARGET_VOL;
+      fadeVolume(bgm, fromVol, 0, FADE_OUT_MS, () => {
+        try { bgm.pause(); } catch {}
+        location.href = url;
+      });
+    }
+
+    // ===== tombol =====
+    const btnMap = document.getElementById("btnMap");
+    const btnPlay = document.getElementById("btnPlay");
+    const btnKeluar = document.getElementById("btnKeluar");
+    const btnPencapaian = document.getElementById("btnPencapaian");
+
+    btnMap.onclick = () => goNoFade("HalBelajarKategori.html", "utama");
+    btnPlay.onclick = () => goNoFade("HalMainKuis.html", "utama");
+
+    // ✅ Keluar -> HalMasuk: fade-out BGM utama dulu, baru pindah, terus HalMasuk fade-in
+    btnKeluar.onclick = () => goWithFadeOut("HalMasuk.html", "md");
+
+    btnPencapaian.onclick = () => {
+      sessionStorage.setItem(SS_AUTOPLAY, "1");
+      saveUtamaTime();
+      localStorage.setItem(LS_TRACK, "pencapaian");
+      location.href = "HalPencapaian.html";
+    };
   </script>
 </body>
 </html>

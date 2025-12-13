@@ -3,186 +3,524 @@
 <head>
   <meta charset="UTF-8" />
   <title>Jawab Kuis – Nusantara</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Tailwind -->
+  <link rel="icon" href="data:,">
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @keyframes popBadge {
+      0%   { transform: scale(0.3); opacity: 0; }
+      80%  { transform: scale(1.18); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .badge-pop-animate { animation: popBadge 0.45s ease-out; }
+
+    @keyframes badgeFloatSoft {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+    #badge-popup-icon {
+      animation: badgeFloatSoft 3.2s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .back-btn {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 0.75rem;
+      border: 5px solid #004EB9;
+      background-color: #bfefff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition:
+        background-color 0.1s ease-out,
+        transform 0.1s ease-out,
+        box-shadow 0.1s ease-out;
+    }
+    .back-btn:hover { box-shadow: 0 0 0 6px #ffffff; transform: scale(1.03); }
+    .back-btn:active { transform: translateY(1px); }
+
+    body { margin: 0; min-height: 100vh; background-color: #ffffff; }
+
+    .main-wrapper { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+    #quiz-card { background-color: transparent; border: none; box-shadow: none; }
+
+    #timer, .score-box {
+      border-radius: 9999px;
+      border: 5px solid #005bd4;
+      background-color: #ffffff;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+      font-weight: 800;
+    }
+
+    #question-text {
+      border-radius: 1.75rem;
+      border: 5px solid #005bd4;
+      background-color: #bfefff;
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    #media-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .option-btn {
+      border-radius: 1.75rem;
+      border: 5px solid #005bd4;
+      background-color: #bfefff;
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      transition:
+        background-color 0.1s ease-out,
+        color 0.1s ease-out,
+        box-shadow 0.1s ease-out,
+        transform 0.1s ease-out,
+        border-color 0.1s ease-out;
+    }
+    .option-btn:hover:not(.correct):not(.wrong):not(:disabled) {
+      background-color: #004EB9;
+      color: #ffffff;
+      border-color: #ffffff;
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .option-btn.option-img { padding: 0 !important; overflow: hidden; }
+    .option-btn.option-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    body.mode-normal .back-btn { border-color: #5C3F3F; background-color: #ffc9aa; }
+    body.mode-normal #timer, body.mode-normal .score-box { border-color: #5C3F3F; }
+    body.mode-normal #question-text { border: 5px solid #5C3F3F; background-color: #ffc9aa; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25); }
+    body.mode-normal #media-card { border-color: #5C3F3F; background-color: #ffe0c9; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25); }
+    body.mode-normal .option-btn { border: 5px solid #5C3F3F; background-color: #ffc9aa; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25); }
+    body.mode-normal .option-btn:hover:not(.correct):not(.wrong):not(:disabled) {
+      background-color: #B13600; color: #ffffff; border-color: #ffffff;
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3); transform: translateY(-1px);
+    }
+
+    body.mode-hard .back-btn { border-color: #7E067E; background-color: #F1DDFF; }
+    body.mode-hard #timer, body.mode-hard .score-box { border-color: #7E067E; }
+    body.mode-hard #question-text { border: 5px solid #7E067E; background-color: #E5C6FF; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25); }
+    body.mode-hard #media-card { border-color: #7E067E; background-color: #F3E1FF; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25); }
+    body.mode-hard .option-btn { border: 5px solid #7E067E; background-color: #E5C6FF; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25); }
+    body.mode-hard .option-btn:hover:not(.correct):not(.wrong):not(:disabled) {
+      background-color: #7900BF; color: #ffffff; border-color: #ffffff;
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3); transform: translateY(-1px);
+    }
+
+    .option-btn.correct,
+    body.mode-easy .option-btn.correct,
+    body.mode-normal .option-btn.correct,
+    body.mode-hard .option-btn.correct {
+      background-color: #1fa338;
+      border-color: #0c6420;
+      color: #ffffff;
+    }
+
+    .option-btn.wrong,
+    body.mode-easy .option-btn.wrong,
+    body.mode-normal .option-btn.wrong,
+    body.mode-hard .option-btn.wrong {
+      background-color: #d82323;
+      border-color: #861212;
+      color: #ffffff;
+    }
+
+    #confirm-exit { background-color: rgba(0, 0, 0, 0.45) !important; }
+    #confirm-exit .popup-box {
+      background-color: #ffffff;
+      border: 5px solid #c0c0c0;
+      border-radius: 1.5rem;
+      padding: 1.8rem;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 10px 0 rgba(0, 0, 0, 0.25);
+    }
+    #confirm-exit .popup-box p { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.2rem; white-space: nowrap; }
+
+    .btn-exit {
+      padding: 0.6rem 1.4rem;
+      border-radius: 1rem;
+      border: 5px solid #dcdcdc;
+      font-weight: 700;
+      min-width: 90px;
+      transition: 0.15s ease-out;
+    }
+    #btn-exit-yes { background-color: #f2f2f2; border: 5px solid #dcdcdc; }
+    #btn-exit-yes:hover { background-color: #7d7d7d; transform: translateY(-2px); color: white; }
+    #btn-exit-no { background-color: #ff6464; color: white; }
+    #btn-exit-no:hover { background-color: #ff4a4a; border: 5px solid #ff9797; transform: translateY(-2px); }
+
+    #final-screen {
+      background-image: url("./src/assets/LogoIcons/bgPoinTotal.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .final-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 12.2rem;
+      padding-bottom: 0rem;
+      gap: 2.5rem;
+    }
+    .final-header { display: flex; flex-direction: column; align-items: center; gap: 0rem; }
+    .final-title {
+      font-size: clamp(2.5rem, 3.4vw, 3.8rem);
+      font-weight: 900;
+      text-align: center;
+      color: #ffffff;
+      text-shadow: 0 3px 0 #00000055;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .final-score {
+      font-size: clamp(3.5rem, 4.8vw, 5rem);
+      font-weight: 900;
+      letter-spacing: 0.28rem;
+      text-align: center;
+      color: #ffffff;
+      text-shadow: 0 3px 0 #00000055;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .final-buttons {
+      margin-top: auto;
+      margin-bottom: 1.85rem;
+      width: 78%;
+      max-width: 860px;
+      display: flex;
+      justify-content: space-between;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .final-slot { flex: 1; display: flex; justify-content: center; }
+    .final-slot-left { padding-right: 0.5rem; }
+    .final-slot-right { padding-left: 0.5rem; }
+
+    .final-btn {
+      min-width: 240px;
+      padding: 1rem 3rem;
+      border-radius: 20px;
+      border: 5px solid #2b0f0f;
+      background: linear-gradient(180deg, #ffa52b 0%, #c26a00 100%);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #000;
+      cursor: pointer;
+      transition:
+        background-color 0.18s ease-out,
+        border-color 0.18s ease-out,
+        transform 0.12s ease-out,
+        box-shadow 0.18s ease-out;
+    }
+    .final-btn:hover { transform: translateY(-2px); box-shadow: 0 0 0 5px rgba(0,0,0,0.25); }
+    .final-btn:active { transform: translateY(0px); box-shadow: 0 0 0 3px rgba(0,0,0,0.35); }
+    #btn-final-exit:hover { background: linear-gradient(180deg, #ff5757 0%, #c72323 100%); border-color: #7c0000; }
+    #btn-final-replay:hover { background: linear-gradient(180deg, #35ff6d 0%, #0ca93a 100%); border-color: #046a1f; }
+
+    #badge-popup-overlay { background-color: rgba(0, 0, 0, 0.6); }
+    #badge-popup-content {
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      padding: 0 !important;
+    }
+    #badge-popup-name, #badge-popup-desc { text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+    @keyframes rarityGlowPulse {
+      0% { transform: scale(0.95); opacity: 0.55; }
+      50% { transform: scale(1.06); opacity: 0.95; }
+      100% { transform: scale(0.95); opacity: 0.55; }
+    }
+    .rarity-glow-base { animation: rarityGlowPulse 2.4s ease-in-out infinite; filter: blur(14px); pointer-events: none; }
+
+    .rarity-tier-1 { background: radial-gradient(circle at center,#fff7c2 0%,#ffe066 35%,rgba(255,224,102,0.0) 70%); }
+    .rarity-tier-2 { background: radial-gradient(circle at center,#ffe0b3 0%,#ffb347 35%,rgba(255,179,71,0.0) 70%); }
+    .rarity-tier-3 { background: radial-gradient(circle at center,#ffd1c2 0%,#ff7043 35%,rgba(255,112,67,0.0) 70%); }
+    .rarity-tier-4 { background: radial-gradient(circle at center,#c2f7ff 0%,#4dd0e1 35%,rgba(77,208,225,0.0) 70%); }
+    .rarity-tier-5 { background: radial-gradient(circle at center,#f0d4ff 0%,#9c4dcc 35%,rgba(156,77,204,0.0) 70%); }
+    .rarity-tier-6 { background: radial-gradient(circle at center,#ffd6f2 0%,#ff80ab 30%,#ffd180 55%,rgba(255,209,128,0.0) 80%); }
+  </style>
 </head>
 
-<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center">
+  <!-- BACK BUTTON -->
+  <button id="backBtn" class="back-btn hidden fixed top-6 left-6 z-[40]">
+    <img src="./src/assets/LogoIcons/iconKembali.png" class="w-6 h-6 sm:w-7 sm:h-7" />
+  </button>
 
-  <!-- WRAPPER BESAR -->
-  <div class="w-full max-w-5xl bg-white rounded-3xl shadow-lg border border-black p-4 sm:p-6 md:p-8">
+  <!-- SPLASH -->
+  <div id="splash-easy" class="fixed inset-0 z-20 flex items-center justify-center">
+    <img src="./src/assets/LogoIcons/logoModeMudah.png" class="w-full h-full object-cover" />
+  </div>
+  <div id="splash-normal" class="hidden fixed inset-0 z-20 flex items-center justify-center">
+    <img src="./src/assets/LogoIcons/logoModeNormal.png" class="w-full h-full object-cover" />
+  </div>
+  <div id="splash-hard" class="hidden fixed inset-0 z-20 flex items-center justify-center">
+    <img src="./src/assets/LogoIcons/logoModeSulit.png" class="w-full h-full object-cover" />
+  </div>
 
-    <!-- BAR ATAS -->
-    <div class="flex items-stretch mb-6">
-      <!-- Tombol back -->
-      <button
-        id="backBtn"
-        class="w-12 h-12 rounded-2xl border border-black flex items-center justify-center mr-4 shrink-0"
-      >
-        <img
-          src="./src/assets/LogoIcons/iconKembali.png"
-          alt="Kembali"
-          class="w-6 h-6"
-        />
-      </button>
-
-      <div class="flex-1">
-        <div
-          id="title-bar"
-          class="w-full h-12 rounded-2xl border border-black bg-gray-100 px-4 flex items-center justify-center text-center text-xl sm:text-2xl font-bold"
-        >
-          JAWAB KUIS
-        </div>
-      </div>
-    </div>
-
-    <!-- =============== SPLASH MODE =============== -->
-
-    <!-- Splash Mode Mudah -->
-    <div
-      id="splash-easy"
-      class="flex flex-col items-center justify-center border border-black rounded-3xl bg-gray-100 min-h-[60vh] px-4"
-    >
-      <img
-        src="./src/assets/LogoIcons/LogoMudah.png"
-        alt="Logo Mode Mudah – 11 Level"
-        class="max-w-xs sm:max-w-sm w-full"
-      />
-    </div>
-
-    <!-- Splash Mode Normal -->
-    <div
-      id="splash-normal"
-      class="hidden flex-col items-center justify-center border border-black rounded-3xl bg-gray-100 min-h-[60vh] px-4"
-    >
-      <img
-        src="./src/assets/LogoIcons/LogoNormal.png"
-        alt="Logo Mode Normal – 15 Level"
-        class="max-w-xs sm:max-w-sm w-full"
-      />
-    </div>
-
-    <!-- Splash Mode Sulit -->
-    <div
-      id="splash-hard"
-      class="hidden flex-col items-center justify-center border border-black rounded-3xl bg-gray-100 min-h-[60vh] px-4"
-    >
-      <img
-        src="./src/assets/LogoIcons/LogoSulit.png"
-        alt="Logo Mode Sulit – 19 Level"
-        class="max-w-xs sm:max-w-sm w-full"
-      />
-    </div>
-
-    <!-- =============== KARTU KUIS =============== -->
-    <div
-      id="quiz-card"
-      class="hidden flex-col border border-black rounded-3xl bg-gray-100 p-4 sm:p-6 min-h-[60vh]"
-    >
-      <!-- BAR TIMER & SKOR -->
+  <!-- WRAPPER KUIS -->
+  <div class="main-wrapper w-full max-w-5xl mx-4 my-6">
+    <div id="quiz-card" class="hidden flex-col p-4 sm:p-6 min-h-[60vh]">
       <div class="flex items-center justify-between mb-4 gap-2">
-        <div
-          id="timer"
-          class="flex-1 max-w-[7.5rem] inline-flex items-center justify-center px-4 py-2 rounded-2xl border border-black bg-white text-lg font-bold"
-        >
+        <div id="timer" class="flex-1 max-w-[7.5rem] inline-flex items-center justify-center px-4 py-2 rounded-2xl border border-black bg-white text-lg font-bold">
           00:15
         </div>
 
-        <div class="text-[11px] sm:text-sm md:text-base font-semibold text-center flex-1">
-          <span id="level-text">Level 1 / 11</span>
+        <div id="level-text" class="text-xs sm:text-base font-semibold text-center flex-1">
+          Level 1 / 11
         </div>
 
-        <div
-          id="score-box"
-          class="flex-1 max-w-[7.5rem] inline-flex items-center justify-center px-4 py-2 rounded-2xl border border-black bg-white text-lg font-bold"
-        >
-          Skor:
-          <span id="score" class="ml-1 text-lg sm:text-xl">0</span>
+        <div class="score-box flex-1 max-w-[7.5rem] inline-flex items-center justify-center px-4 py-2 text-lg font-bold">
+          Poin: <span id="score" class="ml-1">0</span>
         </div>
       </div>
 
-      <!-- PERTANYAAN -->
-      <div
-        id="question-text"
-        class="mb-6 rounded-3xl border border-black bg-gray-200 px-4 py-6 text-center text-lg sm:text-2xl font-semibold"
-      >
-        Pertanyaannya akan muncul di sini
-      </div>
+      <div id="quiz-layout" class="flex flex-col lg:flex-row gap-4 flex-1 items-start">
+        <div id="media-col" class="hidden w-full lg:w-auto items-center justify-center mb-4 lg:mb-0">
+          <div id="media-card" class="w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] rounded-[2rem] border-[5px] border-[#0060d0] bg-[#cfefff] shadow-[0_6px_0_#004a9d] overflow-hidden flex items-center justify-center"></div>
+        </div>
 
-      <!-- PILIHAN JAWABAN -->
-      <div class="space-y-4">
-        <button
-          class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 text-base sm:text-lg font-semibold"
-        >
-          Opsi 1
-        </button>
-        <button
-          class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 text-base sm:text-lg font-semibold"
-        >
-          Opsi 2
-        </button>
-        <button
-          class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 text-base sm:text-lg font-semibold"
-        >
-          Opsi 3
-        </button>
-      </div>
-    </div>
+        <div id="qa-col" class="w-full flex flex-col gap-4">
+          <div id="question-text" class="rounded-3xl border border-black bg-gray-200 px-4 py-4 text-center text-lg sm:text-2xl font-semibold">
+            Pertanyaan muncul di sini
+          </div>
 
-    <!-- =============== FINAL SCORE =============== -->
-    <div
-      id="final-screen"
-      class="hidden flex flex-col items-center justify-center border border-black rounded-3xl bg-gray-100 min-h-[60vh] px-4"
-    >
-      <p class="text-2xl sm:text-3xl font-bold mb-4 text-center">
-        Permainan Selesai!
-      </p>
-      <p class="text-lg sm:text-xl mb-2 text-center">
-        Total Skor Anda:
-      </p>
-      <p
-        id="final-score"
-        class="text-5xl sm:text-6xl md:text-7xl font-extrabold text-center"
-      >
-        0
-      </p>
-    </div>
-  </div>
-
-  <!-- POPUP KONFIRMASI KELUAR -->
-  <div
-    id="confirm-exit"
-    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-  >
-    <div
-      class="bg-white rounded-2xl border border-black p-6 w-full max-w-sm text-center shadow-lg"
-    >
-      <p class="font-semibold mb-4 text-base sm:text-lg">
-        Apa Anda ingin berhenti bermain kuis?
-      </p>
-
-      <div class="flex gap-3 justify-center">
-        <button
-          id="btn-exit-yes"
-          class="px-4 py-2 rounded-xl border border-black bg-gray-200 font-semibold"
-        >
-          Ya
-        </button>
-        <button
-          id="btn-exit-no"
-          class="px-4 py-2 rounded-xl border border-black bg-red-500 text-white font-semibold"
-        >
-          Tidak, lanjutkan
-        </button>
+          <div id="options-wrapper" class="flex flex-col gap-4">
+            <button class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 font-semibold">Opsi 1</button>
+            <button class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 font-semibold">Opsi 2</button>
+            <button class="option-btn w-full py-3 rounded-2xl border border-black bg-gray-200 font-semibold">Opsi 3</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- SCRIPT DATA & GAME -->
+  <!-- FINAL SCORE -->
+  <div id="final-screen" class="hidden fixed inset-0 z-30 flex items-center justify-center">
+    <div class="w-full h-full">
+      <div class="final-content">
+        <div class="final-header">
+          <p class="final-title">Total poin kamu</p>
+          <p id="final-score" class="final-score">000</p>
+        </div>
+
+        <div class="final-buttons">
+          <div class="final-slot final-slot-left">
+            <button id="btn-final-exit" class="final-btn">Keluar</button>
+          </div>
+          <div class="final-slot final-slot-right">
+            <button id="btn-final-replay" class="final-btn">Main lagi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP KELUAR -->
+  <div id="confirm-exit" class="hidden fixed inset-0 z-40 flex items-center justify-center">
+    <div class="popup-box">
+      <p>Apa Anda ingin berhenti bermain kuis?</p>
+      <div class="flex gap-4 justify-center">
+        <button id="btn-exit-yes" class="btn-exit">Ya</button>
+        <button id="btn-exit-no" class="btn-exit">Tidak</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP BADGE -->
+  <div id="badge-popup-overlay" class="hidden fixed inset-0 bg-black/60 z-[80] flex items-center justify-center">
+    <div id="badge-popup-content" class="badge-pop-animate flex flex-col items-center text-center px-6 py-6">
+      <div class="relative inline-flex items-center justify-center">
+        <div id="badge-rarity-glow" class="hidden absolute inset-[-22%] rounded-full"></div>
+        <img id="badge-popup-icon" src="" class="relative max-w-[260px] sm:max-w-[320px] z-[1]" />
+      </div>
+
+      <p id="badge-popup-name" class="mt-3 text-xl sm:text-2xl font-bold text-white drop-shadow"></p>
+      <p id="badge-popup-desc" class="mt-1 text-sm text-white/80 max-w-xs sm:max-w-sm"></p>
+      <p class="mt-4 text-[11px] text-white/70 tracking-wide">Ketuk layar untuk melanjutkan</p>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!--  🎧 AUDIO MANAGER MODE (FIX TOTAL: SPLASH GANTI BGM)   -->
+  <!-- ====================================================== -->
+  <script>
+  (() => {
+    // pakai URL yang aman di live server
+    const SRC = {
+      easy:   new URL("src/assets/Sounds/soundModeMudah.mp3",  document.baseURI).toString(),
+      normal: new URL("src/assets/Sounds/soundModeNormal.mp3", document.baseURI).toString(),
+      hard:   new URL("src/assets/Sounds/soundModeSulit.mp3",  document.baseURI).toString(),
+    };
+
+    const TARGET_VOL  = 0.55;
+    const FADE_OUT_MS = 260;
+    const FADE_IN_MS  = 360;
+
+    const bgm = new Audio();
+    bgm.loop = true;
+    bgm.preload = "auto";
+
+    let unlocked = false;
+    let pendingMode = "easy";
+    let fadeTimer = null;
+
+    function clamp01(v){ return Math.max(0, Math.min(1, v)); }
+
+    function fadeVolume(from, to, ms, done) {
+      if (fadeTimer) clearInterval(fadeTimer);
+      const steps = 18;
+      const stepMs = Math.max(10, Math.floor(ms / steps));
+      let i = 0;
+      bgm.volume = clamp01(from);
+
+      fadeTimer = setInterval(() => {
+        i++;
+        const t = i / steps;
+        bgm.volume = clamp01(from + (to - from) * t);
+        if (i >= steps) {
+          clearInterval(fadeTimer);
+          fadeTimer = null;
+          bgm.volume = clamp01(to);
+          done && done();
+        }
+      }, stepMs);
+    }
+
+    async function safePlay() {
+      try {
+        await bgm.play();
+        unlocked = true;
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // ✅ INI YANG KAMU BUTUH:
+    // dipanggil saat splash muncul / saat mode berubah
+    async function setMode(modeId, fromStart = true) {
+      if (!SRC[modeId]) return;
+      pendingMode = modeId;
+
+      // belum unlock? cukup simpan pending (nanti pas tap pertama baru main sesuai pending)
+      if (!unlocked) return;
+
+      const nextSrc = SRC[modeId];
+
+      const startNow = async () => {
+        // set src + load biar beneran ganti file
+        bgm.src = nextSrc;
+        bgm.load();
+
+        if (fromStart) {
+          try { bgm.currentTime = 0; } catch {}
+        }
+
+        bgm.volume = 0;
+        const ok = await safePlay();
+        if (ok) fadeVolume(0, TARGET_VOL, FADE_IN_MS);
+      };
+
+      // kalau lagi main, fade out dulu
+      if (!bgm.paused) {
+        const fromVol = (typeof bgm.volume === "number") ? bgm.volume : TARGET_VOL;
+        fadeVolume(fromVol, 0, FADE_OUT_MS, () => {
+          try { bgm.pause(); } catch {}
+          startNow();
+        });
+      } else {
+        startNow();
+      }
+    }
+
+    // dipanggil pas badge popup (di JS kamu), supaya volume kecil / balik normal
+    function duck(enable) {
+      if (!unlocked) return;
+      bgm.volume = enable ? 0.12 : TARGET_VOL;
+    }
+
+    async function unlockGesture() {
+      if (unlocked) return;
+
+      // mainkan sesuai mode terakhir yang sudah dipilih (pendingMode)
+      const m = pendingMode || "easy";
+      bgm.src = SRC[m];
+      bgm.load();
+
+      try { bgm.currentTime = 0; } catch {}
+      bgm.volume = 0;
+
+      const ok = await safePlay();
+      if (ok) fadeVolume(0, TARGET_VOL, FADE_IN_MS);
+    }
+
+    function bindUnlockOnce() {
+      const opt = { once: true, capture: true };
+      window.addEventListener("pointerdown", unlockGesture, opt);
+      window.addEventListener("touchstart", unlockGesture, opt);
+      window.addEventListener("mousedown", unlockGesture, opt);
+      window.addEventListener("click", unlockGesture, opt);
+      window.addEventListener("keydown", unlockGesture, opt);
+    }
+    bindUnlockOnce();
+
+    // expose
+    window.AudioMode = { setMode, duck };
+  })();
+  </script>
+
+  <!-- SCRIPT DATA + GAME -->
   <script src="./dataNusantara.js"></script>
   <script src="./HalMainKuis.js"></script>
+
+  <!-- ====================================================== -->
+  <!--  🔗 HOOK: SPLASH → GANTI MUSIC (INI KUNCI FIX)         -->
+  <!-- ====================================================== -->
+  <script>
+    // HOOK showSplashForMode (punya HalMainKuis.js)
+    const _origShowSplash = window.showSplashForMode;
+
+    window.showSplashForMode = function (modeIndex) {
+      // modeIndex: 0 easy, 1 normal, 2 hard
+      if (window.AudioMode && typeof window.AudioMode.setMode === "function") {
+        if (modeIndex === 0) window.AudioMode.setMode("easy", true);
+        if (modeIndex === 1) window.AudioMode.setMode("normal", true);
+        if (modeIndex === 2) window.AudioMode.setMode("hard", true);
+      }
+      return _origShowSplash(modeIndex);
+    };
+
+    // HOOK badge popup → duck volume
+    const _origShowBadge = window.showBadgePopup;
+    window.showBadgePopup = function (...args) {
+      if (window.AudioMode) window.AudioMode.duck(true);
+      return _origShowBadge.apply(this, args);
+    };
+
+    const overlay = document.getElementById("badge-popup-overlay");
+    if (overlay) {
+      overlay.addEventListener("click", () => {
+        if (window.AudioMode) window.AudioMode.duck(false);
+      });
+    }
+  </script>
 </body>
 </html>

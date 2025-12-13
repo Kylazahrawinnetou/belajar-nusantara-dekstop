@@ -4,88 +4,191 @@
   <meta charset="UTF-8" />
   <title>Kategori Belajar – Kuis Nusantara</title>
   <link rel="stylesheet" href="./dist/output.css" />
+
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background-image: url('./src/assets/LogoIcons/bgKategori.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .back-btn {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 0.75rem;
+      border: 5px solid #000000;
+      background-color: #f9e4c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition:
+        transform 0.08s ease-out,
+        box-shadow 0.08s ease-out,
+        background-color 0.08s ease-out;
+    }
+
+    .back-btn:hover {
+      background-color: #f9e4c7;
+      box-shadow: 0 0 0 6px #ffffff;
+      transform: scale(1.03);
+    }
+
+    .back-btn:active { transform: scale(0.90); }
+
+    .category-btn {
+      width: 14rem;
+      height: 14rem;
+      border-radius: 9999px;
+      border: none;
+      background: transparent;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.08s ease-out,
+                  box-shadow 0.08s ease-out,
+                  background-color 0.08s ease-out;
+    }
+
+    .category-btn:hover {
+      background-color: #ffffff;
+      box-shadow: 0 0 0 15px #ffffff;
+      transform: scale(1.05);
+    }
+
+    .category-btn:active { transform: scale(0.97); }
+
+    .category-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.08s ease-out;
+    }
+
+    .category-btn:hover img { transform: scale(1.08); }
+  </style>
 </head>
 
-<body class="min-h-screen bg-white overflow-hidden">
+<body class="overflow-hidden">
 
-  <!-- Tombol Kembali (tetap di posisi fix, tidak ikut layout) -->
+  <!-- Tombol Kembali -->
   <button
-    onclick="window.location.href='HalPenyambutanReal.html'"
-    class="absolute top-6 left-6 w-14 h-14 rounded-xl border border-black bg-white 
-           flex items-center justify-center hover:bg-slate-100 active:scale-95 transition"
+    onclick="goNoFade('HalPenyambutanReal.html')"
+    class="back-btn absolute top-6 left-6"
   >
     <img src="./src/assets/LogoIcons/iconKembali.png" alt="Kembali" class="w-8 h-8" />
   </button>
 
-  <!-- Container seluruh kategori (FULL SCREEN, CENTER) -->
   <main class="w-full h-screen flex items-center justify-center">
-
-    <!-- Dibuat sedikit mengecil supaya muat 1 layar -->
     <div class="scale-90 sm:scale-100 flex flex-col items-center gap-12">
 
-      <!-- ROW 1 : 3 tombol -->
       <div class="flex flex-col sm:flex-row gap-10 items-center justify-center">
-        <!-- 1 -->
-        <button onclick="window.location.href='HalBelajar-Kg1HewanIkonik.html'"
-          class="w-40 h-40 rounded-full border border-black bg-slate-100 
-                 flex items-center justify-center px-4 text-center
-                 font-bold text-xl hover:bg-slate-200 active:scale-95 transition">
-          HEWAN <br> IKONIK
+
+        <button onclick="goNoFade('HalBelajar-Kg1HewanIkonik.html')" class="category-btn">
+          <img src="./src/assets/LogoIcons/LogoHewanIkonik.png" alt="Hewan Ikonik" />
         </button>
 
-        <!-- 2 -->
-        <button onclick="window.location.href='HalBelajar-Kg2RumahAdat.html'"
-          class="w-40 h-40 rounded-full border border-black bg-slate-100 
-                 flex items-center justify-center px-4 text-center
-                 font-bold text-xl hover:bg-slate-200 active:scale-95 transition">
-          RUMAH <br> ADAT
+        <button onclick="goNoFade('HalBelajar-Kg2RumahAdat.html')" class="category-btn">
+          <img src="./src/assets/LogoIcons/LogoRumahAdat.png" alt="Rumah Adat" />
         </button>
 
-        <!-- 3 -->
-        <button onclick="window.location.href='HalBelajar-Kg3PakaianAdat.html'"
-          class="w-40 h-40 rounded-full border border-black bg-slate-100 
-                 flex items-center justify-center px-4 text-center
-                 font-bold text-xl hover:bg-slate-200 active:scale-95 transition">
-          PAKAIAN <br> ADAT
+        <button onclick="goNoFade('HalBelajar-Kg3PakaianAdat.html')" class="category-btn">
+          <img src="./src/assets/LogoIcons/LogoPakaianAdat.png" alt="Pakaian Adat" />
         </button>
       </div>
 
-      <!-- ROW 2 : 4 tombol -->
       <div class="flex flex-col sm:flex-row gap-10 items-center justify-center">
-        
-        <button onclick="window.location.href='HalBelajar-Kg4TarianDaerah.html'"
-          class="w-40 h-40 rounded-full border border-black bg-slate-100 
-                 flex items-center justify-center px-4 text-center
-                 font-bold text-xl hover:bg-slate-200 active:scale-95 transition">
-          TARIAN <br> DAERAH
+
+        <button onclick="goNoFade('HalBelajar-Kg4TarianDaerah.html')" class="category-btn">
+          <img src="./src/assets/LogoIcons/LogoTarianDaerah.png" alt="Tarian Daerah" />
         </button>
 
-        <button onclick="window.location.href='HalBelajar-Kg5AlatMusikDaerah.html'"
-          class="w-40 h-40 rounded-full border border-black bg-slate-100 
-                 flex items-center justify-center px-4 text-center
-                 font-bold text-xl hover:bg-slate-200 active:scale-95 transition">
-          ALAT MUSIK <br> DAERAH
+        <button onclick="goNoFade('HalBelajar-Kg5AlatMusikDaerah.html')" class="category-btn">
+          <img src="./src/assets/LogoIcons/LogoAlatMusikDaerah.png" alt="Alat Musik Daerah" />
         </button>
 
-        <button onclick="window.location.href='HalBelajar-Kg6SenjataDaerah.html'"
-          class="w-40 h-40 rounded-full border border-black bg-slate-100 
-                 flex items-center justify-center px-4 text-center
-                 font-bold text-xl hover:bg-slate-200 active:scale-95 transition">
-          SENJATA <br> DAERAH
+        <button onclick="goNoFade('HalBelajar-Kg6SenjataDaerah.html')" class="category-btn">
+          <img src="./src/assets/LogoIcons/LogoSenjataDaerah.png" alt="Senjata Daerah" />
         </button>
 
-        <button onclick="window.location.href='HalBelajar-Kg7MakananKhas.html'"
-          class="w-40 h-40 rounded-full border border-black bg-slate-100 
-                 flex items-center justify-center px-4 text-center
-                 font-bold text-xl hover:bg-slate-200 active:scale-95 transition">
-          MAKANAN <br> KHAS
+        <button onclick="goNoFade('HalBelajar-Kg7MakananKhas.html')" class="category-btn">
+          <img src="./src/assets/LogoIcons/LogoMakananKhas.png" alt="Makanan Khas" />
         </button>
-
       </div>
 
     </div>
-
   </main>
-</body>
 
+  <!-- ✅ BGM UTAMA -->
+  <audio id="bgm-utama" src="./src/assets/Sounds/soundUtama.mp3" loop preload="auto"></audio>
+
+  <script>
+    const LS_TRACK = "BGM_TRACK";
+    const LS_UTAMA_TIME = "BGM_UTAMA_TIME";
+    const SS_AUTOPLAY = "AUTO_PLAY_BGM";
+    const TARGET_VOL = 0.6;
+
+    const bgm = document.getElementById("bgm-utama");
+    let unlocked = false;
+
+    function saveUtamaTime() {
+      try { localStorage.setItem(LS_UTAMA_TIME, String(bgm.currentTime || 0)); } catch {}
+    }
+
+    async function playUtamaWithResume_NOFADE() {
+      localStorage.setItem(LS_TRACK, "utama");
+
+      let resume = 0;
+      try { resume = parseFloat(localStorage.getItem(LS_UTAMA_TIME) || "0") || 0; } catch {}
+
+      try {
+        bgm.volume = TARGET_VOL;   // ✅ TANPA fade-in
+        try { bgm.currentTime = resume; } catch (e) {}
+        await bgm.play();
+        unlocked = true;
+      } catch (e) {
+        console.warn("BGM utama belum bisa diputar:", e);
+      }
+    }
+
+    function unlockGesture() {
+      if (unlocked) return;
+      playUtamaWithResume_NOFADE();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const shouldAuto = sessionStorage.getItem(SS_AUTOPLAY) === "1";
+      sessionStorage.removeItem(SS_AUTOPLAY);
+      if (shouldAuto) playUtamaWithResume_NOFADE();
+    });
+
+    document.addEventListener("pointerdown", unlockGesture, { once: true });
+    document.addEventListener("keydown", unlockGesture, { once: true });
+
+    setInterval(() => {
+      if (!bgm.paused && !bgm.ended) saveUtamaTime();
+    }, 1000);
+
+    window.addEventListener("beforeunload", () => {
+      saveUtamaTime();
+      try { bgm.pause(); } catch {}
+    });
+
+    function goNoFade(url) {
+      sessionStorage.setItem(SS_AUTOPLAY, "1");
+      localStorage.setItem(LS_TRACK, "utama");
+      saveUtamaTime();
+      location.href = url;
+    }
+    window.goNoFade = goNoFade;
+  </script>
+
+</body>
 </html>

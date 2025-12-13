@@ -2,17 +2,15 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Daftar – Hewan Nusantara</title>
+  <title>Daftar – Kuis Belajar Nusantara</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
 
-  <!-- Firebase COMPAT (bukan modular) -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
   <script>
-    // ===== FIREBASE CONFIG punyamu =====
     const firebaseConfig = {
       apiKey: "AIzaSyD7Q_tqMXzbXEsuyCKNuU_S1RvyclpIs38",
       authDomain: "belajar-nusantara.firebaseapp.com",
@@ -23,174 +21,245 @@
       measurementId: "G-J0QVM8XLLE"
     };
 
-    // Inisialisasi Firebase (COMPAT)
-    firebase.initializeApp(firebaseConfig);
+    // ✅ Aman walau terpanggil lagi
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
   </script>
+
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background-image: url('./src/assets/LogoIcons/bgMasukDaftar.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .daftar-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+  </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+<body>
+  <main class="w-full h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-xl flex flex-col items-center">
+      <h1 class="daftar-title text-5xl sm:text-6xl text-black mb-8">DAFTAR</h1>
 
-  <!-- KARTU FORM DAFTAR -->
-  <div class="w-full max-w-xl bg-white rounded-2xl p-8 shadow">
+      <div class="w-full flex flex-col gap-5">
+        <div>
+          <input id="usernameInputDaftar" type="text" placeholder="Daftarkan Nama Anda"
+            class="w-full rounded-2xl border-[5px] border-black bg-gray-100 px-4 py-3 text-lg placeholder-gray-500 shadow-md" />
+        </div>
 
-    <!-- Judul -->
-    <h1 class="text-3xl font-extrabold text-center mb-8 tracking-wide">
-      DAFTAR
-    </h1>
+        <div>
+          <input id="passwordInputDaftar" type="password" placeholder="Daftarkan Kata Sandi Anda"
+            class="w-full rounded-2xl border-[5px] border-black bg-gray-100 px-4 py-3 text-lg placeholder-gray-500 shadow-md" />
+        </div>
 
-    <!-- Input Nama -->
-    <label class="block mb-2 font-semibold">Daftarkan Nama Anda</label>
-    <input
-      id="usernameInput"
-      type="text"
-      placeholder="Daftarkan Nama Anda"
-      class="w-full border border-black rounded-xl p-3 mb-5 bg-gray-100 text-lg placeholder-gray-500"
-    />
+        <button type="button" id="registerBtn"
+          class="w-full py-4 rounded-2xl bg-[#4E2700] text-white text-2xl font-bold tracking-wide
+                 border-[5px] border-[#C05C2F] active:translate-y-[1px]
+                 transition-all duration-150
+                 hover:bg-[#C05C2F] hover:border-[#4E2700] hover:text-white hover:scale-[1.03]">
+          DAFTAR
+        </button>
 
-    <!-- Input Password -->
-    <label class="block mb-2 font-semibold">Daftarkan Kata Sandi Anda</label>
-    <input
-      id="passwordInput"
-      type="password"
-      placeholder="Daftarkan Kata Sandi Anda"
-      class="w-full border border-black rounded-xl p-3 mb-8 bg-gray-100 text-lg placeholder-gray-500"
-    />
+        <p class="mt-4 text-center text-lg sm:text-xl text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+          Sudah mempunyai akun?
+          <a id="linkMasuk" href="HalMasuk.html"
+            class="font-bold underline-offset-2 hover:text-yellow-300 active:opacity-80 transition-colors duration-150">
+            Masuk
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
 
-    <!-- Tombol DAFTAR -->
-    <button
-      id="signupBtn"
-      class="w-full py-3 rounded-xl text-white bg-black hover:bg-gray-900 text-lg font-bold tracking-wide transition"
-    >
-      DAFTAR
-    </button>
-
-    <!-- Link ke HalMasuk -->
-    <p class="text-center mt-6 text-base">
-      Sudah mempunyai akun?
-      <a href="HalMasuk.html" class="font-semibold underline-offset-2 hover:underline">
-        Masuk
-      </a>
-    </p>
+  <div id="card-success" class="hidden fixed inset-0 z-40 flex items-start justify-center pointer-events-none">
+    <div class="mt-16 bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3 pointer-events-auto">
+      <img src="./src/assets/LogoIcons/iconNamaKataSandiSudahDidaftarkanGreen.png" alt="Success" class="w-10 h-10" />
+      <p class="font-semibold text-sm sm:text-base">Pendaftaran Berhasil!</p>
+    </div>
   </div>
 
-  <!-- NOTIF: BERHASIL DIDAFTRAKAN (HIJAU) -->
-  <div
-    id="card-registered-now"
-    class="hidden fixed top-6 left-6 z-40"
-  >
-    <div class="bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3">
-      <img
-        src="./src/assets/LogoIcons/iconNamaKataSandiSudahDidaftarkanGreen.png"
-        alt="Sukses"
-        class="w-10 h-10"
-      />
+  <div id="card-user-exists" class="hidden fixed inset-0 z-40 flex items-start justify-center pointer-events-none">
+    <div class="mt-16 bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3 pointer-events-auto">
+      <img src="./src/assets/LogoIcons/iconNamaKataSandiSudahTerdaftarRed.png" alt="Error" class="w-10 h-10" />
+      <p class="font-semibold text-sm sm:text-base">Akun ini sudah terdaftar</p>
+    </div>
+  </div>
+
+  <div id="card-invalid" class="hidden fixed inset-0 z-40 flex items-start justify-center pointer-events-none">
+    <div class="mt-16 bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3 pointer-events-auto">
+      <img src="./src/assets/LogoIcons/iconNamaKataSandisalah.png" alt="Warning" class="w-10 h-10" />
+      <p class="font-semibold text-sm sm:text-base">Nama dan Kata Sandi harus diisi dengan benar (Min. 6 Karakter)</p>
+    </div>
+  </div>
+
+  <div id="card-op-not-allowed" class="hidden fixed inset-0 z-40 flex items-start justify-center pointer-events-none">
+    <div class="mt-16 bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3 pointer-events-auto">
+      <img src="./src/assets/LogoIcons/iconNamaKataSandisalah.png" alt="Warning" class="w-10 h-10" />
       <p class="font-semibold text-sm sm:text-base">
-        Nama dan password ini<br />sudah didaftarkan
+        Email/Password belum diaktifkan di Firebase Authentication
       </p>
     </div>
   </div>
 
-  <!-- NOTIF: SUDAH TERDAFTAR (MERAH) -->
-  <div
-    id="card-already-exists"
-    class="hidden fixed top-6 left-6 z-40"
-  >
-    <div class="bg-white border border-black rounded-2xl shadow-lg px-6 py-4 flex items-center gap-3">
-      <img
-        src="./src/assets/LogoIcons/iconNamaKataSandiSudahTerdaftarRed.png"
-        alt="Sudah Terdaftar"
-        class="w-10 h-10"
-      />
-      <p class="font-semibold text-sm sm:text-base">
-        Nama dan password ini<br />sudah terdaftar
-      </p>
-    </div>
-  </div>
+  <audio id="bgm-md" src="./src/assets/Sounds/soundMasukDaftar.mp3" loop preload="auto"></audio>
 
   <script>
-    // Sama seperti HalMasuk: ubah username → email internal
+    // ===== DEBUG biar kalau error pasti kelihatan =====
+    window.addEventListener("error", (e) => {
+      console.error("GLOBAL ERROR:", e.message, e.filename, e.lineno);
+    });
+
+    // ===== BGM masuk/daftar =====
+    const LS_TRACK = "BGM_TRACK";
+    const LS_MD_TIME = "BGM_MD_TIME";
+    const SS_AUTOPLAY = "AUTO_PLAY_BGM";
+
+    const TARGET_VOL = 0.6;
+    const bgm = document.getElementById("bgm-md");
+    let unlocked = false;
+
+    function saveMdTime() {
+      try { localStorage.setItem(LS_MD_TIME, String(bgm.currentTime || 0)); } catch {}
+    }
+
+    async function playMdResume_NoFade() {
+      localStorage.setItem(LS_TRACK, "masukdaftar");
+
+      let resume = 0;
+      try { resume = parseFloat(localStorage.getItem(LS_MD_TIME) || "0") || 0; } catch {}
+
+      try {
+        bgm.volume = TARGET_VOL;
+        try { bgm.currentTime = resume; } catch(e) {}
+        await bgm.play();
+        unlocked = true;
+      } catch(e) {
+        console.warn("BGM masuk/daftar belum bisa diputar:", e);
+      }
+    }
+
+    function unlockGesture() {
+      if (unlocked) return;
+      playMdResume_NoFade();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const shouldAuto = sessionStorage.getItem(SS_AUTOPLAY) === "1";
+      sessionStorage.removeItem(SS_AUTOPLAY);
+      if (shouldAuto) playMdResume_NoFade();
+    });
+
+    document.addEventListener("pointerdown", unlockGesture, { once:true });
+    document.addEventListener("keydown", unlockGesture, { once:true });
+
+    setInterval(() => {
+      if (!bgm.paused && !bgm.ended) saveMdTime();
+    }, 1000);
+
+    window.addEventListener("beforeunload", () => {
+      saveMdTime();
+      try { bgm.pause(); } catch {}
+    });
+
+    function goNoFadeMD(url) {
+      sessionStorage.setItem(SS_AUTOPLAY, "1");
+      localStorage.setItem(LS_TRACK, "masukdaftar");
+      saveMdTime();
+      location.href = url;
+    }
+
+    document.getElementById("linkMasuk").addEventListener("click", (e) => {
+      e.preventDefault();
+      goNoFadeMD("HalMasuk.html");
+    });
+
+    // ===== REGISTER LOGIC =====
     function usernameToEmail(username) {
       return username.trim().toLowerCase().replace(/\s+/g, "_") + "@local.project";
     }
 
-    const usernameInput = document.getElementById("usernameInput");
-    const passwordInput = document.getElementById("passwordInput");
-    const signupBtn = document.getElementById("signupBtn");
+    const usernameInput  = document.getElementById("usernameInputDaftar");
+    const passwordInput  = document.getElementById("passwordInputDaftar");
+    const registerBtn    = document.getElementById("registerBtn");
 
-    const cardRegisteredNow = document.getElementById("card-registered-now");
-    const cardAlreadyExists = document.getElementById("card-already-exists");
+    const cardSuccess    = document.getElementById("card-success");
+    const cardUserExists = document.getElementById("card-user-exists");
+    const cardInvalid    = document.getElementById("card-invalid");
+    const cardOpNA       = document.getElementById("card-op-not-allowed");
 
     function hideAllCards() {
-      cardRegisteredNow.classList.add("hidden");
-      cardAlreadyExists.classList.add("hidden");
+      cardSuccess.classList.add("hidden");
+      cardUserExists.classList.add("hidden");
+      cardInvalid.classList.add("hidden");
+      cardOpNA.classList.add("hidden");
     }
 
     function showCard(type) {
       hideAllCards();
-      if (type === "registered-now") {
-        cardRegisteredNow.classList.remove("hidden");
-      } else if (type === "already-exists") {
-        cardAlreadyExists.classList.remove("hidden");
-      }
-
-      // auto hide setelah 3 detik
+      if (type === "success") cardSuccess.classList.remove("hidden");
+      else if (type === "user-exists") cardUserExists.classList.remove("hidden");
+      else if (type === "op-not-allowed") cardOpNA.classList.remove("hidden");
+      else cardInvalid.classList.remove("hidden");
       setTimeout(hideAllCards, 3000);
     }
 
-    async function handleSignup() {
+    async function handleRegister() {
+      console.log("REGISTER clicked"); // ✅ buktiin klik kepanggil
       hideAllCards();
 
       const username = (usernameInput.value || "").trim();
       const password = (passwordInput.value || "").trim();
 
-      if (!username || !password) {
-        // kalau kosong, boleh kamu tambahin notif lain kalau mau
+      if (!username || !password || password.length < 6) {
+        showCard("invalid");
         return;
       }
 
       const email = usernameToEmail(username);
 
-      signupBtn.disabled = true;
-      signupBtn.textContent = "Memproses...";
+      registerBtn.disabled = true;
+      registerBtn.textContent = "Memproses...";
 
       try {
-        // coba buat akun baru
+        unlockGesture(); // biar bgm unlock saat user klik
+
         const cred = await auth.createUserWithEmailAndPassword(email, password);
+        try { await cred.user.updateProfile({ displayName: username }); } catch {}
 
-        // opsional: simpan displayName
-        await cred.user.updateProfile({ displayName: username }).catch(() => {});
+        showCard("success");
+        setTimeout(() => goNoFadeMD("HalMasuk.html"), 1200);
 
-        // BERHASIL → tampilkan notif hijau
-        showCard("registered-now");
-
-        // setelah 1.2 detik, pindah ke HalMasuk
-        setTimeout(() => {
-          window.location.href = "HalMasuk.html";
-        }, 1200);
       } catch (err) {
-        console.error("signup error:", err);
+        console.error("Register error:", err);
 
-        if (err.code === "auth/email-already-in-use") {
-          // akun dengan nama (email internal) ini sudah pernah dibuat
-          showCard("already-exists");
+        if (err?.code === "auth/email-already-in-use") {
+          showCard("user-exists");
+        } else if (err?.code === "auth/operation-not-allowed") {
+          // ✅ Ini sering banget kalau Email/Password Sign-in belum diaktifkan di Firebase Auth
+          showCard("op-not-allowed");
         } else {
-          // error lain → sementara juga pakai notif merah
-          showCard("already-exists");
+          showCard("invalid");
         }
+      } finally {
+        registerBtn.disabled = false;
+        registerBtn.textContent = "DAFTAR";
       }
-
-      signupBtn.disabled = false;
-      signupBtn.textContent = "DAFTAR";
     }
 
-    signupBtn.addEventListener("click", handleSignup);
-
-    // Enter di password juga submit
+    registerBtn.addEventListener("click", handleRegister);
     passwordInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        handleSignup();
-      }
+      if (e.key === "Enter") handleRegister();
     });
   </script>
 </body>

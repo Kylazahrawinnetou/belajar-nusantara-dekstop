@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Memuat Rewards – Kuis Belajar Nusantara</title>
+  <link rel="stylesheet" href="./dist/output.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    @keyframes dotsMove { 0%{background-position:0 0;} 100%{background-position:150px 0;} }
+    .dots-pattern{
+      background-image: radial-gradient(circle at 8px 8px, rgba(255,255,255,0.9) 0, rgba(255,255,255,0.9) 3px, transparent 4px);
+      background-size: 40px 25px;
+      animation: dotsMove 0.9s linear infinite;
+      opacity: 0.9;
+    }
+    .loading-font { font-family: 'Poppins', sans-serif; }
+    :root{
+      --bar-height:65px;
+      --bar-bg:#1e6bd6;
+      --bar-fill:#4da3ff;
+      --bar-shadow:#123f8c;
+    }
+    body{
+      overflow:hidden;
+      background-repeat:no-repeat;
+      background-size:cover;
+      background-position:center;
+      background-image:url('./src/assets/LogoIcons/bgFirst.png');
+    }
+  </style>
+</head>
+
+<body>
+  <main class="w-full min-h-screen flex flex-col items-center justify-center px-4 gap-6">
+    <img
+      src="./src/assets/LogoIcons/LogoAplFit.png"
+      alt="Logo Aplikasi"
+      style="max-height: 250px; width: auto; display: block; margin-bottom: 16px;"
+    />
+
+    <div
+      class="relative mx-auto border-4 shadow-lg"
+      style="
+        width: 50%;
+        max-width: 900px;
+        height: var(--bar-height);
+        background-color: var(--bar-bg);
+        border-color: var(--bar-fill);
+        box-shadow: 0 6px 0 var(--bar-shadow);
+        border-radius: 20px;
+      "
+    >
+      <div
+        id="loading-fill"
+        class="absolute left-0 top-0 h-full overflow-hidden"
+        style="width:0%;background-color:var(--bar-fill);border-radius:20px;"
+      >
+        <div class="w-[200%] h-full dots-pattern"></div>
+      </div>
+
+      <div class="relative z-10 flex items-center justify-center h-full">
+        <span id="loading-text" style="color:#ffffff;font-weight:800;" class="loading-font text-4xl sm:text-5xl">
+          Memuat ...
+        </span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const TOTAL_DURATION = 10000;
+    const INTERVAL_MS = 30;
+
+    const fill = document.getElementById("loading-fill");
+    const text = document.getElementById("loading-text");
+
+    let progress = 0;
+    const step = (INTERVAL_MS / TOTAL_DURATION) * 100;
+
+    const timer = setInterval(() => {
+      progress += step;
+
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(timer);
+        text.textContent = "";
+        setTimeout(() => {
+          window.location.href = "HalPenyambutan.html";
+        }, 1500);
+      }
+      fill.style.width = progress + "%";
+    }, INTERVAL_MS);
+  </script>
+</body>
+</html>
