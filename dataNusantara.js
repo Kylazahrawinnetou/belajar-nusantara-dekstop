@@ -334,7 +334,7 @@ const PROVINSI_DATA = [
     ibuKota: "Mamuju",
     pulau: "Sulawesi",
     hewanIkonik: null,
-    pakaianAdat: "Pakaian Adat Pokko dan Pattuqduq",
+    pakaianAdat: "Pakaian adat Pokko dan Pattuqduq",
     rumahAdat: "Rumah adat Boyang",
     tarianDaerah: "Tari Pattuqduq Towaine",
     senjataDaerah: "Tombak",

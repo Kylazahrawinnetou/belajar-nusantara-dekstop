@@ -67,6 +67,60 @@ function asset(p) {
 }
 
 // =======================
+//  IMG FALLBACK (anti 404 / beda casing nama file di hosting Linux)
+//  - Tidak mengubah alur quiz
+//  - Hanya mempengaruhi pemuatan gambar (src) saat render
+// =======================
+
+function _fixCommonCasingInFilename(str) {
+  // Fokus ke pola yang sering bikin 404 karena beda huruf besar/kecil di NAMA FILE.
+  // Aman: kalau sudah benar, hasilnya sama.
+  return String(str)
+    .replace(/Pakaianadat/g, "PakaianAdat")
+    .replace(/Rumahadat/g, "RumahAdat")
+    .replace(/pakaianadat/g, "PakaianAdat")
+    .replace(/rumahadat/g, "RumahAdat");
+}
+
+async function setImgWithFallback(imgEl, url, placeholderUrl) {
+  if (!imgEl) return;
+
+  const original = String(url || "");
+  const placeholder = String(placeholderUrl || "");
+
+  // Kalau kosong, langsung placeholder
+  if (!original) {
+    if (placeholder) imgEl.src = placeholder;
+    return;
+  }
+
+  // Kandidat: original -> fixed casing -> kebalikannya (jarang, tapi aman)
+  const fixed = _fixCommonCasingInFilename(original);
+  const reversed = fixed
+    .replace(/PakaianAdat/g, "Pakaianadat")
+    .replace(/RumahAdat/g, "Rumahadat");
+
+  const candidates = [...new Set([original, fixed, reversed])];
+
+  for (const u of candidates) {
+    try {
+      const res = await fetch(u, { method: "HEAD", cache: "no-store" });
+      if (res.ok) {
+        imgEl.src = u;
+        return;
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  // Kalau semuanya gagal, fallback ke placeholder (kalau ada),
+  // kalau tidak ada, set original biar error tetap kebaca.
+  if (placeholder) imgEl.src = placeholder;
+  else imgEl.src = original;
+}
+
+// =======================
 //  KONFIGURASI VARIASI SOAL & GAMBAR
 // =======================
 
@@ -1003,22 +1057,31 @@ function renderQuestionToUI(question) {
   }
 
   if (mediaCol && mediaCard) {
-    if (question.variation === QUESTION_VARIATIONS.GAMBAR_KE_PROVINSI && question.imageSrc) {
-      mediaCol.classList.remove("hidden");
-      mediaCol.classList.add("flex");
+  if (question.variation === QUESTION_VARIATIONS.GAMBAR_KE_PROVINSI && question.imageSrc) {
+    mediaCol.classList.remove("hidden");
+    mediaCol.classList.add("flex");
 
-      mediaCard.innerHTML = `
-        <img src="${question.imageSrc}"
-             alt="${question.ikonValue || ""}"
-             onerror="this.onerror=null; this.src='${PLACEHOLDER_IMG}'"
-             class="w-full h-full object-cover" />
-      `;
-    } else {
-      mediaCol.classList.add("hidden");
-      mediaCol.classList.remove("flex");
-      mediaCard.innerHTML = "";
-    }
+    mediaCard.innerHTML = "";
+
+    const qImg = document.createElement("img");
+    qImg.alt = question.ikonValue || "";
+    qImg.className = "w-full h-full object-cover";
+    qImg.onerror = () => {
+      qImg.onerror = null;
+      qImg.src = PLACEHOLDER_IMG;
+    };
+
+    mediaCard.appendChild(qImg);
+
+    // pakai fallback loader (anti 404 casing)
+    setImgWithFallback(qImg, question.imageSrc, PLACEHOLDER_IMG);
+  } else {
+    mediaCol.classList.add("hidden");
+    mediaCol.classList.remove("flex");
+    mediaCard.innerHTML = "";
   }
+}
+
 
   if (questionEl) questionEl.textContent = question.prompt || "Pertanyaan";
 
@@ -1040,13 +1103,23 @@ function renderQuestionToUI(question) {
     if (question.variation === QUESTION_VARIATIONS.GAMBAR_KE_GAMBAR) {
       btn.className = baseImgClass;
 
-      const src = opt.imgSrc || PLACEHOLDER_IMG;
-      btn.innerHTML = `
-        <img src="${src}"
-             alt="${opt.label || question.categoryName || ""}"
-             onerror="this.onerror=null; this.src='${PLACEHOLDER_IMG}'"
-             class="w-full h-full object-cover" />
-      `;
+      btn.innerHTML = "";
+
+const oImg = document.createElement("img");
+oImg.alt = opt.label || question.categoryName || "";
+oImg.className = "w-full h-full object-cover";
+oImg.onerror = () => {
+  oImg.onerror = null;
+  oImg.src = PLACEHOLDER_IMG;
+};
+
+btn.appendChild(oImg);
+
+const src = opt.imgSrc || PLACEHOLDER_IMG;
+
+// pakai fallback loader (anti 404 casing)
+setImgWithFallback(oImg, src, PLACEHOLDER_IMG);
+
     } else {
       btn.className = baseTextClass;
       btn.textContent = opt.label;
