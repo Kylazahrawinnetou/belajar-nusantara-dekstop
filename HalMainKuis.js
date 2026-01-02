@@ -82,7 +82,7 @@ function _fixCommonCasingInFilename(str) {
     .replace(/rumahadat/g, "RumahAdat");
 }
 
-async function setImgWithFallback(imgEl, url, placeholderUrl) {
+function setImgWithFallback(imgEl, url, placeholderUrl) {
   if (!imgEl) return;
 
   const original = String(url || "");
@@ -90,11 +90,11 @@ async function setImgWithFallback(imgEl, url, placeholderUrl) {
 
   // Kalau kosong, langsung placeholder
   if (!original) {
-    if (placeholder) imgEl.src = placeholder;
+    imgEl.src = placeholder || "";
     return;
   }
 
-  // Kandidat: original -> fixed casing -> kebalikannya (jarang, tapi aman)
+  // Kandidat: original -> fixed casing -> kebalikannya
   const fixed = _fixCommonCasingInFilename(original);
   const reversed = fixed
     .replace(/PakaianAdat/g, "Pakaianadat")
@@ -102,23 +102,24 @@ async function setImgWithFallback(imgEl, url, placeholderUrl) {
 
   const candidates = [...new Set([original, fixed, reversed])];
 
-  for (const u of candidates) {
-    try {
-      const res = await fetch(u, { method: "HEAD", cache: "no-store" });
-      if (res.ok) {
-        imgEl.src = u;
-        return;
-      }
-    } catch (e) {
-      // ignore
-    }
-  }
+  let idx = 0;
 
-  // Kalau semuanya gagal, fallback ke placeholder (kalau ada),
-  // kalau tidak ada, set original biar error tetap kebaca.
-  if (placeholder) imgEl.src = placeholder;
-  else imgEl.src = original;
+  const tryNext = () => {
+    idx++;
+    if (idx < candidates.length) {
+      imgEl.src = candidates[idx];
+    } else {
+      // Semua gagal -> ke placeholder (atau original)
+      imgEl.onerror = null;
+      imgEl.src = placeholder || original;
+    }
+  };
+
+  // fallback berantai
+  imgEl.onerror = tryNext;
+  imgEl.src = candidates[0];
 }
+
 
 // =======================
 //  KONFIGURASI VARIASI SOAL & GAMBAR
@@ -1064,17 +1065,13 @@ function renderQuestionToUI(question) {
     mediaCard.innerHTML = "";
 
     const qImg = document.createElement("img");
-    qImg.alt = question.ikonValue || "";
-    qImg.className = "w-full h-full object-cover";
-    qImg.onerror = () => {
-      qImg.onerror = null;
-      qImg.src = PLACEHOLDER_IMG;
-    };
+qImg.alt = question.ikonValue || "";
+qImg.className = "w-full h-full object-cover";
 
-    mediaCard.appendChild(qImg);
+mediaCard.appendChild(qImg);
 
-    // pakai fallback loader (anti 404 casing)
-    setImgWithFallback(qImg, question.imageSrc, PLACEHOLDER_IMG);
+// pakai fallback loader (anti 404 casing)
+setImgWithFallback(qImg, question.imageSrc, PLACEHOLDER_IMG);
   } else {
     mediaCol.classList.add("hidden");
     mediaCol.classList.remove("flex");
@@ -1108,10 +1105,6 @@ function renderQuestionToUI(question) {
 const oImg = document.createElement("img");
 oImg.alt = opt.label || question.categoryName || "";
 oImg.className = "w-full h-full object-cover";
-oImg.onerror = () => {
-  oImg.onerror = null;
-  oImg.src = PLACEHOLDER_IMG;
-};
 
 btn.appendChild(oImg);
 
