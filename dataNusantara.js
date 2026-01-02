@@ -9,9 +9,9 @@ const PROVINSI_DATA = [
     ibuKota: "Banda Aceh",
     pulau: "Sumatera",
     hewanIkonik: null,
-    pakaianAdat: "Pakaian adat Ulee Balang",
-    rumahAdat: "Rumoh Aceh",
-    tarianDaerah: "Tari Saman",
+    pakaianAdat: "Ulee Balang",
+    rumahAdat: "Aceh",
+    tarianDaerah: "Saman",
     senjataDaerah: "Rencong",
     alatMusik: "Canang",
     makananKhas: "Mie Aceh"
@@ -22,9 +22,9 @@ const PROVINSI_DATA = [
     ibuKota: "Medan",
     pulau: "Sumatera",
     hewanIkonik: "Burung Beo Nias",
-    pakaianAdat: "Pakaian adat Ulos Batak",
-    rumahAdat: "Rumah Bolon",
-    tarianDaerah: "Tari Tor-tor",
+    pakaianAdat: "Ulos Batak",
+    rumahAdat: "Bolon",
+    tarianDaerah: "Tor-tor",
     senjataDaerah: "Piso Surit",
     alatMusik: "Gordang Sambilan",
     makananKhas: "Bika Ambon"
@@ -35,9 +35,9 @@ const PROVINSI_DATA = [
     ibuKota: "Palembang",
     pulau: "Sumatera",
     hewanIkonik: "Ikan Belida",
-    pakaianAdat: "Pakaian adat Aesan Gede",
-    rumahAdat: "Rumah Limas",
-    tarianDaerah: "Tari Gending Sriwijaya",
+    pakaianAdat: "Aesan Gede",
+    rumahAdat: "Limas",
+    tarianDaerah: "Gending Sriwijaya",
     senjataDaerah: "Tombak Trisula",
     alatMusik: "Gendang Melayu",
     makananKhas: "Pempek"
@@ -48,9 +48,9 @@ const PROVINSI_DATA = [
     ibuKota: "Padang",
     pulau: "Sumatera",
     hewanIkonik: "Burung Kuau Raja",
-    pakaianAdat: "Pakaian adat Bundo Kanduang",
-    rumahAdat: "Rumah Gadang",
-    tarianDaerah: "Tari Piring",
+    pakaianAdat: "Bundo Kanduang",
+    rumahAdat: "Gadang",
+    tarianDaerah: "Piring",
     senjataDaerah: "Karih",
     alatMusik: "Saluang",
     makananKhas: "Rendang"
@@ -61,9 +61,9 @@ const PROVINSI_DATA = [
     ibuKota: "Bengkulu",
     pulau: "Sumatera",
     hewanIkonik: null,
-    pakaianAdat: "Pakaian adat Melayu Bengkulu",
-    rumahAdat: "Rumah adat Bubungan Lima",
-    tarianDaerah: "Tari Andun",
+    pakaianAdat: "Melayu Bengkulu",
+    rumahAdat: "Bubungan Lima",
+    tarianDaerah: "Andun",
     senjataDaerah: null,
     alatMusik: "Serunai Bengkulu",
     makananKhas: "Pendap"
@@ -74,9 +74,9 @@ const PROVINSI_DATA = [
     ibuKota: "Pekanbaru",
     pulau: "Sumatera",
     hewanIkonik: "Burung Serindit",
-    pakaianAdat: "Pakaian adat Teluk Belanga",
-    rumahAdat: "Rumah adat Selaso Jatuh Kembar",
-    tarianDaerah: "Tari Zapin Melayu",
+    pakaianAdat: "Teluk Belanga",
+    rumahAdat: "Selaso Jatuh Kembar",
+    tarianDaerah: "Zapin Melayu",
     senjataDaerah: "Pedang Jenawi",
     alatMusik: "Gambus",
     makananKhas: "Gulai Belacan"
@@ -87,9 +87,9 @@ const PROVINSI_DATA = [
     ibuKota: "Tanjung Pinang",
     pulau: "Sumatera",
     hewanIkonik: "Ikan Kakap Merah",
-    pakaianAdat: "Pakaian adat Teluk Belanga dan Kebaya Labuh",
-    rumahAdat: "Rumah adat Belah Bubung",
-    tarianDaerah: "Tari Joget Dangkong",
+    pakaianAdat: "Teluk Belanga dan Kebaya Labuh",
+    rumahAdat: "Belah Bubung",
+    tarianDaerah: "Joget Dangkong",
     senjataDaerah: "Badik Tumbuk Lado",
     alatMusik: "Gendang Panjang",
     makananKhas: "Otak-otak"
@@ -100,9 +100,9 @@ const PROVINSI_DATA = [
     ibuKota: "Jambi",
     pulau: "Sumatera",
     hewanIkonik: "Harimau Sumatera",
-    pakaianAdat: "Pakaian adat Melayu Jambi",
-    rumahAdat: "Rumah adat Kejang Lako",
-    tarianDaerah: "Tari Sekapur Sirih",
+    pakaianAdat: "Melayu Jambi",
+    rumahAdat: "Kejang Lako",
+    tarianDaerah: "Sekapur Sirih",
     senjataDaerah: "Keris Siginjai",
     alatMusik: "Serunai Jambi",
     makananKhas: "Gulai Ikan Patin"
@@ -113,9 +113,9 @@ const PROVINSI_DATA = [
     ibuKota: "Bandar Lampung",
     pulau: "Sumatera",
     hewanIkonik: "Gajah Sumatera",
-    pakaianAdat: "Pakaian adat Tulang Bawang",
-    rumahAdat: "Rumah adat Nuwo Sesat",
-    tarianDaerah: "Tari Sigeh Pengunten",
+    pakaianAdat: "Tulang Bawang",
+    rumahAdat: "Nuwo Sesat",
+    tarianDaerah: "Sigeh Pengunten",
     senjataDaerah: "Terapang",
     alatMusik: "Bende",
     makananKhas: "Seruit"
@@ -126,9 +126,9 @@ const PROVINSI_DATA = [
     ibuKota: "Pangkal Pinang",
     pulau: "Sumatera",
     hewanIkonik: null,
-    pakaianAdat: "Pakaian adat Melayu Belitung",
-    rumahAdat: "Rumah Rakit",
-    tarianDaerah: "Tari Campak",
+    pakaianAdat: "Melayu Belitung",
+    rumahAdat: "Rakit",
+    tarianDaerah: "Campak",
     senjataDaerah: "Siwar Panjang",
     alatMusik: "Gendang Melayu",
     makananKhas: "Mie Bangka"
@@ -139,9 +139,9 @@ const PROVINSI_DATA = [
     ibuKota: "Samarinda",
     pulau: "Kalimantan",
     hewanIkonik: "Pesut Mahakam",
-    pakaianAdat: "Pakaian adat Urang Besesua",
-    rumahAdat: "Rumah adat Lamin",
-    tarianDaerah: "Tari Hudoq",
+    pakaianAdat: "Urang Besesua",
+    rumahAdat: "Lamin",
+    tarianDaerah: "Hudoq",
     senjataDaerah: "Mandau Kenyah",
     alatMusik: "Sampe",
     makananKhas: "Ayam Cincane"
@@ -152,9 +152,9 @@ const PROVINSI_DATA = [
     ibuKota: "Pontianak",
     pulau: "Kalimantan",
     hewanIkonik: "Burung Enggang",
-    pakaianAdat: "Pakaian adat King Baba dan King Bibinge",
-    rumahAdat: "Rumah Panjang",
-    tarianDaerah: "Tari Monong",
+    pakaianAdat: "King Baba dan King Bibinge",
+    rumahAdat: "Panjang",
+    tarianDaerah: "Monong",
     senjataDaerah: "Mandau Iban",
     alatMusik: "Sape Dayak",
     makananKhas: "Bubur Pedas Sambas"
@@ -165,9 +165,9 @@ const PROVINSI_DATA = [
     ibuKota: "Palangkaraya",
     pulau: "Kalimantan",
     hewanIkonik: "Burung Enggang",
-    pakaianAdat: "Pakaian adat Sangkarut",
-    rumahAdat: "Rumah adat Betang",
-    tarianDaerah: "Tari Manasai",
+    pakaianAdat: "Sangkarut",
+    rumahAdat: "Betang",
+    tarianDaerah: "Manasai",
     senjataDaerah: "Mandau Ngaju",
     alatMusik: "Katambung",
     makananKhas: "Juhu Singkah"
@@ -178,9 +178,9 @@ const PROVINSI_DATA = [
     ibuKota: "Banjarbaru",
     pulau: "Kalimantan",
     hewanIkonik: "Bekantan",
-    pakaianAdat: "Pakaian adat Bagajah Gamuling Baular Lulut",
-    rumahAdat: "Rumah adat Bubungan Tinggi",
-    tarianDaerah: "Tari Baksa Kembang",
+    pakaianAdat: "Bagajah Gamuling Baular Lulut",
+    rumahAdat: "Bubungan Tinggi",
+    tarianDaerah: "Baksa Kembang",
     senjataDaerah: "Bujak Beliung",
     alatMusik: "Panting",
     makananKhas: "Soto Banjar"
@@ -191,9 +191,9 @@ const PROVINSI_DATA = [
     ibuKota: "Tanjung Selor",
     pulau: "Kalimantan",
     hewanIkonik: null,
-    pakaianAdat: "Pakaian adat Taa dan Sapei Sapaq",
-    rumahAdat: "Rumah adat Baloy",
-    tarianDaerah: "Tari Jugit",
+    pakaianAdat: "Taa dan Sapei Sapaq",
+    rumahAdat: "Baloy",
+    tarianDaerah: "Jugit",
     senjataDaerah: "Mandau",
     alatMusik: "Sampeq",
     makananKhas: "Kepiting Soka"
@@ -204,9 +204,9 @@ const PROVINSI_DATA = [
     ibuKota: "Jakarta",
     pulau: "Jawa",
     hewanIkonik: "Burung Elang Bondol",
-    pakaianAdat: "Pakaian adat Abang None",
-    rumahAdat: "Rumah Kebaya",
-    tarianDaerah: "Tari Topeng Betawi",
+    pakaianAdat: "Abang None",
+    rumahAdat: "Kebaya",
+    tarianDaerah: "Topeng Betawi",
     senjataDaerah: "Golok",
     alatMusik: "Tanjidor",
     makananKhas: "Kerak Telor"
@@ -217,9 +217,9 @@ const PROVINSI_DATA = [
     ibuKota: "Serang",
     pulau: "Jawa",
     hewanIkonik: "Badak Jawa",
-    pakaianAdat: "Pakaian adat Pangsi dan Kebaya",
-    rumahAdat: "Rumah Baduy",
-    tarianDaerah: "Tari Rampak Bedug",
+    pakaianAdat: "Pangsi dan Kebaya",
+    rumahAdat: "Baduy",
+    tarianDaerah: "Rampak Bedug",
     senjataDaerah: "Kujang",
     alatMusik: "Gogdog Lojor",
     makananKhas: "Sate Bandeng"
@@ -230,9 +230,9 @@ const PROVINSI_DATA = [
     ibuKota: "Bandung",
     pulau: "Jawa",
     hewanIkonik: "Badak Jawa",
-    pakaianAdat: "Pakaian adat Jas Beludru dan Kebaya Sunda",
-    rumahAdat: "Rumah adat Jolopong",
-    tarianDaerah: "Tari Jaipong",
+    pakaianAdat: "Jas Beludru dan Kebaya Sunda",
+    rumahAdat: "Jolopong",
+    tarianDaerah: "Jaipong",
     senjataDaerah: "Kujang",
     alatMusik: "Angklung",
     makananKhas: "Serabi"
@@ -243,9 +243,9 @@ const PROVINSI_DATA = [
     ibuKota: "Semarang",
     pulau: "Jawa",
     hewanIkonik: "Burung Kepodang",
-    pakaianAdat: "Pakaian adat Beskap dan Kebaya",
+    pakaianAdat: "Beskap dan Kebaya",
     rumahAdat: "Joglo",
-    tarianDaerah: "Tari Gambyong",
+    tarianDaerah: "Gambyong",
     senjataDaerah: "Keris",
     alatMusik: "Gamelan",
     makananKhas: "Lumpia"
@@ -256,9 +256,9 @@ const PROVINSI_DATA = [
     ibuKota: "Yogyakarta",
     pulau: "Jawa",
     hewanIkonik: "Burung Perkutut Jawa",
-    pakaianAdat: "Pakaian adat Paes Ageng",
+    pakaianAdat: "Paes Ageng",
     rumahAdat: "Joglo",
-    tarianDaerah: "Tari Serimpi",
+    tarianDaerah: "Serimpi",
     senjataDaerah: "Keris",
     alatMusik: "Gamelan",
     makananKhas: "Gudeg"
@@ -269,9 +269,9 @@ const PROVINSI_DATA = [
     ibuKota: "Surabaya",
     pulau: "Jawa",
     hewanIkonik: "Ayam Bekisar",
-    pakaianAdat: "Pakaian adat Pesaan dan Kebaya Rancongan",
+    pakaianAdat: "Pesaan dan Kebaya Rancongan",
     rumahAdat: "Joglo Sinom",
-    tarianDaerah: "Tari Reog Ponorogo",
+    tarianDaerah: "Reog Ponorogo",
     senjataDaerah: "Celurit",
     alatMusik: "Bonang",
     makananKhas: "Rujak Cingur"
@@ -282,9 +282,9 @@ const PROVINSI_DATA = [
     ibuKota: "Denpasar",
     pulau: "Bali",
     hewanIkonik: "Burung Jalak Bali",
-    pakaianAdat: "Pakaian adat Payas Agung",
-    rumahAdat: "Rumah adat Bale",
-    tarianDaerah: "Tari Legong",
+    pakaianAdat: "Payas Agung",
+    rumahAdat: "Bale",
+    tarianDaerah: "Legong",
     senjataDaerah: "Keris",
     alatMusik: "Cengceng",
     makananKhas: "Ayam Betutu"
@@ -295,9 +295,9 @@ const PROVINSI_DATA = [
     ibuKota: "Mataram",
     pulau: "Nusa Tenggara",
     hewanIkonik: "Rusa Timor",
-    pakaianAdat: "Pakaian adat Pegon",
-    rumahAdat: "Rumah adat Bale Lumbung",
-    tarianDaerah: "Tari Gendang Beleq",
+    pakaianAdat: "Pegon",
+    rumahAdat: "Bale Lumbung",
+    tarianDaerah: "Gendang Beleq",
     senjataDaerah: "Sampari",
     alatMusik: "Gendang Beleq",
     makananKhas: "Ayam Taliwang"
@@ -308,9 +308,9 @@ const PROVINSI_DATA = [
     ibuKota: "Kupang",
     pulau: "Nusa Tenggara",
     hewanIkonik: "Komodo",
-    pakaianAdat: "Pakaian adat Amarasi",
-    rumahAdat: "Rumah adat Musalaki",
-    tarianDaerah: "Tari Caci",
+    pakaianAdat: "Amarasi",
+    rumahAdat: "Musalaki",
+    tarianDaerah: "Caci",
     senjataDaerah: "Sundu",
     alatMusik: "Sasando",
     makananKhas: "Sei Kupang"
@@ -321,9 +321,9 @@ const PROVINSI_DATA = [
     ibuKota: "Manado",
     pulau: "Sulawesi",
     hewanIkonik: "Tarsius",
-    pakaianAdat: "Pakaian adat Laku Tepu",
-    rumahAdat: "Rumah adat Walewangko",
-    tarianDaerah: "Tari Kabasaran",
+    pakaianAdat: "Laku Tepu",
+    rumahAdat: "Walewangko",
+    tarianDaerah: "Kabasaran",
     senjataDaerah: "Keris",
     alatMusik: "Kolintang",
     makananKhas: "Tinutuan"
@@ -334,9 +334,9 @@ const PROVINSI_DATA = [
     ibuKota: "Mamuju",
     pulau: "Sulawesi",
     hewanIkonik: null,
-    pakaianAdat: "Pakaian adat Pokko dan Pattuqduq",
-    rumahAdat: "Rumah adat Boyang",
-    tarianDaerah: "Tari Pattuqduq Towaine",
+    pakaianAdat: "Pokko dan Pattuqduq",
+    rumahAdat: "Boyang",
+    tarianDaerah: "Pattuqduq Towaine",
     senjataDaerah: "Tombak",
     alatMusik: "Kecapi Mandar",
     makananKhas: "Bolu Paranggi"
@@ -347,9 +347,9 @@ const PROVINSI_DATA = [
     ibuKota: "Palu",
     pulau: "Sulawesi",
     hewanIkonik: "Burung Maleo",
-    pakaianAdat: "Pakaian adat Nggembe",
-    rumahAdat: "Rumah adat Souraja",
-    tarianDaerah: "Tari Dero",
+    pakaianAdat: "Nggembe",
+    rumahAdat: "Souraja",
+    tarianDaerah: "Dero",
     senjataDaerah: "Pasatimpo",
     alatMusik: "Lalove",
     makananKhas: "Ikan Jantung Pisang"
@@ -360,9 +360,9 @@ const PROVINSI_DATA = [
     ibuKota: "Gorontalo",
     pulau: "Sulawesi",
     hewanIkonik: "Burung Maleo",
-    pakaianAdat: "Pakaian adat Biliu dan Paluwala",
-    rumahAdat: "Rumah adat Dulohupa",
-    tarianDaerah: "Tari Saronde",
+    pakaianAdat: "Biliu dan Paluwala",
+    rumahAdat: "Dulohupa",
+    tarianDaerah: "Saronde",
     senjataDaerah: "Badik",
     alatMusik: "Ganda",
     makananKhas: "Binte Biluhuta"
@@ -373,9 +373,9 @@ const PROVINSI_DATA = [
     ibuKota: "Kendari",
     pulau: "Sulawesi",
     hewanIkonik: "Anoa",
-    pakaianAdat: "Pakaian adat Babu Nggawi",
-    rumahAdat: "Rumah adat Malige",
-    tarianDaerah: "Tari Lulo",
+    pakaianAdat: "Babu Nggawi",
+    rumahAdat: "Malige",
+    tarianDaerah: "Lulo",
     senjataDaerah: "Keris",
     alatMusik: "Lado-lado",
     makananKhas: "Lapa-lapa"
@@ -386,9 +386,9 @@ const PROVINSI_DATA = [
     ibuKota: "Makassar",
     pulau: "Sulawesi",
     hewanIkonik: "Anoa",
-    pakaianAdat: "Pakaian adat Baju Bodo",
-    rumahAdat: "Rumah adat Tongkonan",
-    tarianDaerah: "Tari Pakarena",
+    pakaianAdat: "Baju Bodo",
+    rumahAdat: "Tongkonan",
+    tarianDaerah: "Pakarena",
     senjataDaerah: "Badik Lompo Battang",
     alatMusik: "Kesokeso",
     makananKhas: "Sup Konro"
@@ -399,9 +399,9 @@ const PROVINSI_DATA = [
     ibuKota: "Sofifi",
     pulau: "Maluku",
     hewanIkonik: "Burung Bidadari Halmahera",
-    pakaianAdat: "Pakaian adat Manteren Lamo",
-    rumahAdat: "Rumah adat Sasadu",
-    tarianDaerah: "Tari Cakalele",
+    pakaianAdat: "Manteren Lamo",
+    rumahAdat: "Sasadu",
+    tarianDaerah: "Cakalele",
     senjataDaerah: "Parang Salawaku",
     alatMusik: "Fu",
     makananKhas: "Gohu Ikan"
@@ -412,9 +412,9 @@ const PROVINSI_DATA = [
     ibuKota: "Ambon",
     pulau: "Maluku",
     hewanIkonik: "Burung Nuri Raja Ambon",
-    pakaianAdat: "Pakaian adat Cele",
-    rumahAdat: "Rumah adat Baileo",
-    tarianDaerah: "Tari Lenso",
+    pakaianAdat: "Cele",
+    rumahAdat: "Baileo",
+    tarianDaerah: "Lenso",
     senjataDaerah: "Parang Salawaku",
     alatMusik: "Tifa Maluku",
     makananKhas: "Ikan Asar"
@@ -425,9 +425,9 @@ const PROVINSI_DATA = [
     ibuKota: "Manokwari",
     pulau: "Papua",
     hewanIkonik: "Burung Kasuari",
-    pakaianAdat: "Pakaian adat Arfak",
-    rumahAdat: "Rumah adat Kaki Seribu",
-    tarianDaerah: "Tari Yosim Pancar",
+    pakaianAdat: "Arfak",
+    rumahAdat: "Kaki Seribu",
+    tarianDaerah: "Yosim Pancar",
     senjataDaerah: "Busur Panah",
     alatMusik: "Tifa Papua Barat",
     makananKhas: "Ikan Bakar Manokwari"
@@ -438,9 +438,9 @@ const PROVINSI_DATA = [
     ibuKota: "Jayapura",
     pulau: "Papua",
     hewanIkonik: "Burung Cendrawasih",
-    pakaianAdat: "Pakaian adat Asmat",
-    rumahAdat: "Rumah adat Honai",
-    tarianDaerah: "Tari Perang",
+    pakaianAdat: "Asmat",
+    rumahAdat: "Honai",
+    tarianDaerah: "Perang",
     senjataDaerah: "Belati Tulang Kasuari",
     alatMusik: "Tifa Papua",
     makananKhas: "Papeda"
@@ -451,9 +451,9 @@ const PROVINSI_DATA = [
     ibuKota: "Kabupaten Merauke",
     pulau: "Papua",
     hewanIkonik: "Kangguru Pohon",
-    pakaianAdat: "Pakaian adat Ewer",
-    rumahAdat: "Rumah adat Jeuw",
-    tarianDaerah: "Tari Tobe",
+    pakaianAdat: "Ewer",
+    rumahAdat: "Jeuw",
+    tarianDaerah: "Tobe",
     senjataDaerah: "Pisuwe",
     alatMusik: null,
     makananKhas: "Sagu Sep"
@@ -464,9 +464,9 @@ const PROVINSI_DATA = [
     ibuKota: "Kabupaten Nabire",
     pulau: "Papua",
     hewanIkonik: "Anjing Hutan Papua",
-    pakaianAdat: "Pakaian adat Koteka dan Rok Rumbai",
-    rumahAdat: "Rumah adat Honai",
-    tarianDaerah: "Tari Musyoh",
+    pakaianAdat: "Koteka dan Rok Rumbai",
+    rumahAdat: "Honai",
+    tarianDaerah: "Musyoh",
     senjataDaerah: "Pisau Belati",
     alatMusik: null,
     makananKhas: "Bagea"
@@ -477,9 +477,9 @@ const PROVINSI_DATA = [
     ibuKota: "Kabupaten Jayawijaya",
     pulau: "Papua",
     hewanIkonik: "Burung Puyuh Salju",
-    pakaianAdat: "Pakaian adat Koteka",
-    rumahAdat: "Rumah adat Honai",
-    tarianDaerah: "Tari Suanggi",
+    pakaianAdat: "Koteka",
+    rumahAdat: "Honai",
+    tarianDaerah: "Suanggi",
     senjataDaerah: "Parang Papua",
     alatMusik: null,
     makananKhas: "Kue Lontar"
@@ -490,9 +490,9 @@ const PROVINSI_DATA = [
     ibuKota: "Sorong",
     pulau: "Papua",
     hewanIkonik: "Burung Cendrawasih",
-    pakaianAdat: "Pakaian adat Rumbai Cendrawasih",
-    rumahAdat: "Rumah adat Kaki Seribu",
-    tarianDaerah: "Tari Yosim Pancar",
+    pakaianAdat: "Rumbai Cendrawasih",
+    rumahAdat: "Kaki Seribu",
+    tarianDaerah: "Yosim Pancar",
     senjataDaerah: "Kapak Papua",
     alatMusik: "Tifa Papua Barat Daya",
     makananKhas: "Udang Selingkuh"
@@ -513,8 +513,6 @@ function shuffle(array) {
 function randomPick(arr, n) {
   return shuffle([...arr]).slice(0, n);
 }
-
-
 
 // ===== TEMPLATE SOAL PER KATEGORI =====
 
@@ -554,7 +552,7 @@ function buildQuestionPakaian(data) {
     question = `Apa pakaian adat dari provinsi ${item.provinsi}?`;
     correct = item.pakaianAdat;
   } else {
-    question = `${item.pakaianAdat} berasal dari provinsi apa?`;
+    question = `Pakaian adat ${item.pakaianAdat} berasal dari provinsi apa?`;
     correct = item.provinsi;
   }
 
@@ -576,7 +574,7 @@ function buildQuestionRumah(data) {
     question = `Apa rumah adat dari provinsi ${item.provinsi}?`;
     correct = item.rumahAdat;
   } else {
-    question = `${item.rumahAdat} berasal dari provinsi apa?`;
+    question = `Rumah adat ${item.rumahAdat} berasal dari provinsi apa?`;
     correct = item.provinsi;
   }
 
@@ -598,7 +596,7 @@ function buildQuestionTari(data) {
     question = `Apa tarian daerah dari provinsi ${item.provinsi}?`;
     correct = item.tarianDaerah;
   } else {
-    question = `${item.tarianDaerah} berasal dari provinsi apa?`;
+    question = `Tari ${item.tarianDaerah} berasal dari provinsi apa?`;
     correct = item.provinsi;
   }
 
@@ -620,7 +618,7 @@ function buildQuestionSenjata(data) {
     question = `Apa senjata daerah dari provinsi ${item.provinsi}?`;
     correct = item.senjataDaerah;
   } else {
-    question = `${item.senjataDaerah} berasal dari provinsi apa?`;
+    question = `Senjata daerah ${item.senjataDaerah} berasal dari provinsi apa?`;
     correct = item.provinsi;
   }
 

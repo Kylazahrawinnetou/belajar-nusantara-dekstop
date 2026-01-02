@@ -82,6 +82,8 @@ function _fixCommonCasingInFilename(str) {
     .replace(/rumahadat/g, "RumahAdat");
 }
 
+const ASSET_VER = "v1"; // kalau mau buang cache, ubah jadi "v2" dll
+
 function setImgWithFallback(imgEl, url, placeholderUrl) {
   if (!imgEl) return;
 
@@ -98,23 +100,27 @@ function setImgWithFallback(imgEl, url, placeholderUrl) {
     .replace(/PakaianAdat/g, "Pakaianadat")
     .replace(/RumahAdat/g, "Rumahadat");
 
-  const candidates = [...new Set([original, fixed, reversed])];
+  const candidates = [...new Set([original, fixed, reversed].filter(Boolean))];
 
-  // Jangan set src dulu -> cek dulu mana yang ada
-  (async () => {
-    for (const u of candidates) {
-      try {
-        const res = await fetch(u, { method: "GET", cache: "no-store" });
-        if (res.ok) {
-          imgEl.src = u;
-          return;
-        }
-      } catch (e) {
-        // ignore
-      }
+  let idx = 0;
+
+  const withVer = (u) => {
+    const joiner = u.includes("?") ? "&" : "?";
+    return `${u}${joiner}ver=${ASSET_VER}`;
+  };
+
+  imgEl.onerror = () => {
+    idx++;
+    if (idx < candidates.length) {
+      imgEl.src = withVer(candidates[idx]);
+    } else {
+      imgEl.onerror = null;
+      imgEl.src = placeholder || original;
     }
-    imgEl.src = placeholder || original;
-  })();
+  };
+
+  // langsung set src pertama → tampil cepat
+  imgEl.src = withVer(candidates[idx]);
 }
 
 // =======================
@@ -145,6 +151,25 @@ const CATEGORY_META = {
   alatMusik: "alat musik daerah",
   makananKhas: "makanan khas",
 };
+
+const CATEGORY_PREFIX = {
+  tarianDaerah: "Tari",
+  rumahAdat: "Rumah adat",
+  pakaianAdat: "Pakaian adat",
+  alatMusik: "Alat musik",
+  senjataDaerah: "Senjata",
+  makananKhas: "Makanan khas",
+};
+
+function withPrefix(fieldKey, value) {
+  if (!value) return "";
+  const prefix = CATEGORY_PREFIX[fieldKey];
+  if (!prefix) return value;
+  // biar ga double kalau datanya sudah ada "Tari ..."
+  if (String(value).toLowerCase().startsWith(prefix.toLowerCase())) return value;
+  return `${prefix} ${value}`;
+}
+
 
 // =======================
 //  KONFIGURASI BADGES
@@ -812,7 +837,7 @@ function generateVariationTeks(modeData) {
     correctText = ikonValue;
     wrongPool = distractItems.map((p) => p[fieldKey]).filter((val) => val && val !== ikonValue);
   } else {
-    prompt = `${ikonValue} merupakan ${categoryName} dari provinsi?`;
+    prompt = `${withPrefix(fieldKey, ikonValue)} merupakan ${categoryName} dari provinsi?`;
     correctText = baseItem.provinsi;
     wrongPool = distractItems.map((p) => p.provinsi).filter((val) => val && val !== baseItem.provinsi);
   }
@@ -917,13 +942,18 @@ function generateVariationGambarKeGambar(modeData) {
 
   const allItems = shuffleArray([baseItem, ...chosenDistr]);
 
-  const options = allItems.map((item, idx) => ({
+  const options = allItems.map((item, idx) => {
+  const rawValue = item[fieldKey]; // ini yang asli (tanpa prefix)
+  return {
     id: `v3-opt-${item.id}-${idx}-${Date.now()}`,
-    label: item[fieldKey],
+    label: withPrefix(fieldKey, rawValue),
+    rawValue, // <<< tambah ini
     imgSrc: getImageSrcForIkon(item, fieldKey),
-  }));
+  };
+});
 
-  const correctOpt = options.find((o) => o.label === ikonValue) || options[0];
+const correctOpt = options.find((o) => o.rawValue === ikonValue) || options[0];
+
 
   return {
     id: `v3-${baseItem.id}-${Date.now()}`,
