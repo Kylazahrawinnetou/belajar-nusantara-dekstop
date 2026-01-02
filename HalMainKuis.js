@@ -88,13 +88,11 @@ function setImgWithFallback(imgEl, url, placeholderUrl) {
   const original = String(url || "");
   const placeholder = String(placeholderUrl || "");
 
-  // Kalau kosong, langsung placeholder
   if (!original) {
     imgEl.src = placeholder || "";
     return;
   }
 
-  // Kandidat: original -> fixed casing -> kebalikannya
   const fixed = _fixCommonCasingInFilename(original);
   const reversed = fixed
     .replace(/PakaianAdat/g, "Pakaianadat")
@@ -102,24 +100,22 @@ function setImgWithFallback(imgEl, url, placeholderUrl) {
 
   const candidates = [...new Set([original, fixed, reversed])];
 
-  let idx = 0;
-
-  const tryNext = () => {
-    idx++;
-    if (idx < candidates.length) {
-      imgEl.src = candidates[idx];
-    } else {
-      // Semua gagal -> ke placeholder (atau original)
-      imgEl.onerror = null;
-      imgEl.src = placeholder || original;
+  // Jangan set src dulu -> cek dulu mana yang ada
+  (async () => {
+    for (const u of candidates) {
+      try {
+        const res = await fetch(u, { method: "GET", cache: "no-store" });
+        if (res.ok) {
+          imgEl.src = u;
+          return;
+        }
+      } catch (e) {
+        // ignore
+      }
     }
-  };
-
-  // fallback berantai
-  imgEl.onerror = tryNext;
-  imgEl.src = candidates[0];
+    imgEl.src = placeholder || original;
+  })();
 }
-
 
 // =======================
 //  KONFIGURASI VARIASI SOAL & GAMBAR
@@ -1067,10 +1063,7 @@ function renderQuestionToUI(question) {
     const qImg = document.createElement("img");
 qImg.alt = question.ikonValue || "";
 qImg.className = "w-full h-full object-cover";
-
 mediaCard.appendChild(qImg);
-
-// pakai fallback loader (anti 404 casing)
 setImgWithFallback(qImg, question.imageSrc, PLACEHOLDER_IMG);
   } else {
     mediaCol.classList.add("hidden");
@@ -1105,14 +1098,8 @@ setImgWithFallback(qImg, question.imageSrc, PLACEHOLDER_IMG);
 const oImg = document.createElement("img");
 oImg.alt = opt.label || question.categoryName || "";
 oImg.className = "w-full h-full object-cover";
-
 btn.appendChild(oImg);
-
-const src = opt.imgSrc || PLACEHOLDER_IMG;
-
-// pakai fallback loader (anti 404 casing)
-setImgWithFallback(oImg, src, PLACEHOLDER_IMG);
-
+setImgWithFallback(oImg, opt.imgSrc || PLACEHOLDER_IMG, PLACEHOLDER_IMG);
     } else {
       btn.className = baseTextClass;
       btn.textContent = opt.label;
