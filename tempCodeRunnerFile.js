@@ -150,7 +150,7 @@ const BADGE_META = {
 
   badge_speed_normal_tarsius: {
     label: "Tarsius",
-    detail: "Mode Normal: waktu rata-rata < 15 detik per soal.",
+    detail: "Mode Normal: waktu rata-rata < 10 detik per soal.",
   },
   badge_accuracy_normal_kasuari: {
     label: "Burung Kasuari",
@@ -389,7 +389,7 @@ function handleModeFinished(modeId) {
     const avgTime  = stats.answered > 0 ? stats.totalTime / stats.answered : 0;
     const accuracy = stats.answered > 0 ? (stats.correct / stats.answered) * 100 : 0;
 
-    if (avgTime > 0 && avgTime < 15) awardBadge(SPEED_BADGE_ID);
+    if (avgTime > 0 && avgTime < 10) awardBadge(SPEED_BADGE_ID);
     if (accuracy >= 80)              awardBadge(ACCURACY_BADGE_ID);
 
     console.log("📊 Statistik Mode Normal:", {
